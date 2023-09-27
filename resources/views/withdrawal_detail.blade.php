@@ -79,7 +79,7 @@
                                 <button
                                     onclick="rejectWithdrawal('{{ $withdrawal_details[0]->Withdrawal_ID }}', '{{ $withdrawal_details[0]->Withdrawal_Status }}')"
                                     class="btn btn-danger w-100 mt-3">Reject</button>
-                                <button
+                                <button id="acceptWithdrawalButton"
                                     onclick="acceptWithdrawal('{{ $withdrawal_details[0]->Withdrawal_ID }}', '{{ $withdrawal_details[0]->Withdrawal_Status }}')"
                                     class="btn btn-success w-100 mt-3">Accept</button>
                                 @endif
@@ -118,54 +118,37 @@
         <script src="{{ asset('js/demo.js')}}"></script>
         <script src="{{ asset('js/styleSwitcher.js')}}"></script>
         <script>
-        var swiper = new Swiper("#card-swiper", {
-            speed: 1500,
-            parallax: true,
-            slidesPerView: 4,
-            spaceBetween: 20,
-            loop: false,
-            breakpoints: {
-                1600: {
-                    slidesPerView: 4,
-                },
+        $('body').on('click', 'button[id=acceptWithdrawalButton]', function(e) {
 
-                1200: {
-                    slidesPerView: 3,
-                },
-                575: {
-                    slidesPerView: 2,
-                },
-                360: {
-                    slidesPerView: 1,
-                },
-            },
         });
+        $(function() {
+            
+            function acceptWithdrawal(id, last_status) {
+                updateStatus(3, id, last_status);
+            }
 
-        function acceptWithdrawal(id, last_status) {
-            updateStatus(3, id, last_status);
-        }
+            function rejectWithdrawal(id, last_status) {
+                updateStatus(4, id, last_status);
+            }
 
-        function rejectWithdrawal(id, last_status) {
-            updateStatus(4, id, last_status);
-        }
-
-        function updateStatus(status_id, id, last_status) {
-            $.ajax({
-                type: "post",
-                url: '{{ action("App\\Http\\Controllers\\WithdrawalsController@setWithdrawalById") }}',
-                data: {
-                    _token: '{{ csrf_token() }}',
-                    status_id: status_id,
-                    id: id,
-                    last_status: last_status
-                },
-                success: function(response) {
-                    console.log(response)
-                },
-                error: function(error) {
-                    console.log(error)
-                    alert(error.responseJSON.message);
-                }
+            function updateStatus(status_id, id, last_status) {
+                $.ajax({
+                    type: "post",
+                    url: '{{ action("App\\Http\\Controllers\\WithdrawalsController@setWithdrawalById") }}',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        status_id: status_id,
+                        id: id,
+                        last_status: last_status
+                    },
+                    success: function(response) {
+                        console.log(response)
+                    },
+                    error: function(error) {
+                        console.log(error)
+                        alert(error.responseJSON.message);
+                    }
+                });
             });
         </script>
 

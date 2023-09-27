@@ -85,7 +85,7 @@
                 if (error.status == 403 ) {
                     window.location.href = "{{ route('auth.verify-device')}}";
                 } else {
-                    alert(error.responseJSON.message);
+                    alert(error.responseText);
                 }
             }
         });
