@@ -7,6 +7,7 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Http\Controllers\WebRequestController;
+use App\Http\Controllers\MetatraderController;
 
 class AdminController extends Controller
 {
@@ -14,6 +15,7 @@ class AdminController extends Controller
     {
         $this->BASE_URL = env("API_SERVER_BASE_URL");
         $this->ReqController = new WebRequestController();
+        $this->MetatraderController = new MetatraderController();
     }
 
     public function initAdminListPage(Request $request)
@@ -47,6 +49,13 @@ class AdminController extends Controller
         ];
 
         return view("admins.edit", $data);
+    }
+
+    public function initSettingsPage(Request $request)
+    {
+        return view("admins.settings",[
+            "trading_account_default_group" => $this->MetatraderController->getTradingAccountsDefaultGroup()->getData()->group
+        ]);
     }
 
     public function getById($id)

@@ -117,4 +117,41 @@ class MetatraderController extends Controller
             ], $exception->getResponse()->getStatusCode());
         }
     }
+
+    public function getTradingAccountsDefaultGroup()
+    {
+        try {
+            $res = $this->ReqController->get($this->BASE_URL . "metatraders/trading_accounts/default_group");
+            $json = json_decode($res->getBody());
+
+            return response()->json([
+                'group' => $json->group
+            ], 200);
+        } catch (\GuzzleHttp\Exception\BadResponseException $exception) {
+            return response()->json([
+                'message' => "Unexpected error occurred",
+                'error' => $exception->getMessage(),
+                'group' => ""
+            ], $exception->getResponse()->getStatusCode());
+        }
+    }
+
+    public function setTradingAccountsDefaultGroup(Request $request)
+    {
+        try {
+            $res = $this->ReqController->post($this->BASE_URL . "metatraders/trading_accounts/default_group", [
+                'group' => $request->get('group')
+            ]);
+            $json = json_decode($res->getBody());
+
+            return response()->json([
+                'message' => "The default group has been set successfully."
+            ], 200);
+        } catch (\GuzzleHttp\Exception\BadResponseException $exception) {
+            return response()->json([
+                'message' => "Unexpected error occurred",
+                'error' => $exception->getResponse()->getBody()->getContents()
+            ], $exception->getResponse()->getStatusCode());
+        }
+    }
 }

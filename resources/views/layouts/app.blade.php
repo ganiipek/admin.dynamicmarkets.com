@@ -20,14 +20,15 @@
     <title>GDM Admin</title>
 
     <link rel="shortcut icon" type="image/icon" href="{{ asset('favicon.ico')}}" />
-    <link rel="stylesheet" href="{{ asset('./vendor/chartist/css/chartist.min.css')}}">
-    <link href="{{ asset('./vendor/wow-master/css/libs/animate.css')}}" rel="stylesheet">
-    <!-- <link href="{{ asset('./vendor/datatables/css/jquery.dataTables.min.css')}}" rel="stylesheet"> -->
+    <link rel="stylesheet" href="{{ asset('vendor/chartist/css/chartist.min.css')}}">
+    <link href="{{ asset('vendor/wow-master/css/libs/animate.css')}}" rel="stylesheet">
+    <!-- <link href="{{ asset('vendor/datatables/css/jquery.dataTables.min.css')}}" rel="stylesheet"> -->
     <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
-    <link href="{{ asset('./vendor/bootstrap-select/dist/css/bootstrap-select.min.css')}}" rel="stylesheet">
-    <link rel="stylesheet" href="{{ asset('./vendor/jquery-nice-select/css/nice-select.css')}}">
+    <link href="{{ asset('vendor/bootstrap-select/dist/css/bootstrap-select.min.css')}}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('vendor/jquery-nice-select/css/nice-select.css')}}">
     <link href="{{ asset('vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">    <link href="{{ asset('vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}" rel="stylesheet">
-
+    
+    <link rel="stylesheet" href="{{ asset('vendor/toastr/css/toastr.min.css') }}">
     <!-- ----swiper-slider---- -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
 
@@ -178,8 +179,9 @@
                             <li><a href="{{ route('admins.add') }}">New Admin</a></li>
                             <li><a href="{{ route('admins.list') }}">Admin List</a></li>
                             <!-- <li><a href="{{ route('admins.set_swaps') }}">Set Swaps</a></li> -->
-                            <li><a href="{{ route('logger_service') }}">Logger Service</a></li>
-                            <li><a href="{{ route('logger_http') }}">Logger HTTP</a></li>
+                            <li><a href="{{ route('admins.logger.service') }}">Logger Service</a></li>
+                            <li><a href="{{ route('admins.logger.http') }}">Logger HTTP</a></li>
+                            <li><a href="{{ route('admins.settings') }}">Settings</a></li>
                         </ul>
                     </li>
                     <li>
@@ -205,27 +207,28 @@
         </div>
     </div>
     <!-- Required vendors -->
-    <script src="{{ asset('vendor/global/global.min.js')}}"></script>
-    <script src="{{ asset('vendor/chart.js/Chart.bundle.min.js')}}"></script>
-    <script src="{{ asset('vendor/bootstrap-select/dist/js/bootstrap-select.min.js')}}"></script>
+    <script src="{{ asset('vendor/global/global.min.js') }}"></script>
+    <script src="{{ asset('vendor/chart.js/Chart.bundle.min.js') }}"></script>
+    <script src="{{ asset('vendor/bootstrap-select/dist/js/bootstrap-select.min.js') }}"></script>
     <!-- -----datatables-- -->
-    <script src="{{ asset('./vendor/datatables/js/jquery.dataTables.min.js')}}"></script>
-    <script src="{{ asset('./js/plugins-init/datatables.init.js')}}"></script>
+    <script src="{{ asset('vendor/datatables/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('js/plugins-init/datatables.init.js') }}"></script>
+    <script src="{{ asset('vendor/toastr/js/toastr.min.js') }}"></script>
 
     <!-- Apex Chart -->
-    <script src="{{ asset('vendor/apexchart/apexchart.js')}}"></script>
-    <script src="{{ asset('vendor/chart.js/Chart.bundle.min.js')}}"></script>
+    <script src="{{ asset('vendor/apexchart/apexchart.js') }}"></script>
+    <script src="{{ asset('vendor/chart.js/Chart.bundle.min.js') }}"></script>
 
     <!-- Chart piety plugin files -->
-    <script src="{{ asset('vendor/peity/jquery.peity.min.js')}}"></script>
+    <script src="{{ asset('vendor/peity/jquery.peity.min.js') }}"></script>
 
-    <script src="{{ asset('vendor/jquery-nice-select/js/jquery.nice-select.min.js')}}"></script>
+    <script src="{{ asset('vendor/jquery-nice-select/js/jquery.nice-select.min.js') }}"></script>
 
     <!-- ----swiper-slider---- -->
-    <script src="{{ asset('./vendor/swiper/js/swiper-bundle.min.js')}}"></script>
+    <script src="{{ asset('vendor/swiper/js/swiper-bundle.min.js') }}"></script>
     <!-- Dashboard 1 -->
 
-    <script src="{{ asset('vendor/wow-master/dist/wow.min.js')}}"></script>
+    <script src="{{ asset('vendor/wow-master/dist/wow.min.js') }}"></script>
 
     <script src="{{ asset('js/dlabnav-init.js')}}"></script>
     <script src="{{ asset('js/custom.min.js')}}"></script>

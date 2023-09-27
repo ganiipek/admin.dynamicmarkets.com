@@ -79,6 +79,10 @@ Route::group(['middleware' => ['accessToken']], function () {
         Route::prefix('/admins')->group(function () {
             Route::post('/add', 'App\Http\Controllers\AdminController@addAdmin');
             Route::delete('/delete', 'App\Http\Controllers\AdminController@deleteAdmin');
+
+            Route::prefix('/settings')->group(function () {
+                Route::post('/trading_account_default_group', "App\Http\Controllers\MetatraderController@setTradingAccountsDefaultGroup");
+            });
         });
 
         Route::prefix('/withdrawals')->group(function () {
@@ -114,9 +118,10 @@ Route::group(['middleware' => ['accessToken']], function () {
         Route::get('/swaps', 'App\Http\Controllers\SwapsController@initSetSwapsPage')->name("admins.set_swaps");
 
         Route::prefix('/logger')->group(function () {
-            Route::get('/http', 'App\Http\Controllers\LoggerController@initLoggerHTTPPage')->name("logger_http");
-            Route::get('/service', 'App\Http\Controllers\LoggerController@initLoggerServicePage')->name("logger_service");
+            Route::get('/http', 'App\Http\Controllers\LoggerController@initLoggerHTTPPage')->name("admins.logger.http");
+            Route::get('/service', 'App\Http\Controllers\LoggerController@initLoggerServicePage')->name("admins.logger.service");
         });
+        Route::get('/settings', 'App\Http\Controllers\AdminController@initSettingsPage')->name("admins.settings");
     });
     
     Route::get('/', 'App\Http\Controllers\StatisticsController@initStatisticsPage')->name("index");
