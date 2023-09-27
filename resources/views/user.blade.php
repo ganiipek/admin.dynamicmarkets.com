@@ -165,13 +165,13 @@
                                                 <tbody>
                                                     @foreach ($trading_accounts as $key => $client)
                                                     <tr>
-                                                        <td>{{$client->Trading_Account}}</td>
-                                                        <td class="whitesp-no fs-14 font-w400">{{$client->Client_ID}}
+                                                        <td>{{$client->login}}</td>
+                                                        <td class="whitesp-no fs-14 font-w400">{{$client->client_id}}
                                                         </td>
-                                                        <td class="whitesp-no fs-14 font-w400">{{$client->Created_Date}}
+                                                        <td class="whitesp-no fs-14 font-w400">{{$client->created_at}}
                                                         </td>
-                                                        <td class="doller">$ {{$client->Balance}} </td>
-                                                        <td class="whitesp-no">1:{{$client->Leverage}}</td>
+                                                        <td class="doller">$ {{$client->balance}} </td>
+                                                        <td class="whitesp-no">1:{{$client->leverage}}</td>
                                                     </tr>
                                                     @endforeach
                                                 </tbody>
