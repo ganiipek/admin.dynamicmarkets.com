@@ -53,7 +53,10 @@ class AdminController extends Controller
 
     public function initSettingsPage(Request $request)
     {
+        $groups = $this->MetatraderController->getGroups();
+
         return view("admins.settings",[
+            "metatrader_groups" => $groups,
             "trading_account_default_group" => $this->MetatraderController->getTradingAccountsDefaultGroup()->getData()->group
         ]);
     }
