@@ -15,7 +15,16 @@
                                             <div class="row">
                                                 <label>Default Group for Newly Opened Account</label>
                                                 <div class="col-sm-9">
-                                                    <input id="tradingAccountDefaultGroupInput" type="text" class="form-control" value="{{ $trading_account_default_group }}" placeholder="Group Name">
+                                                    <select id="tradingAccountDefaultGroupSelect" class="form-control">
+                                                        <option value="*" selected>All Group</option>
+                                                        @foreach($metatrader_groups as $group)
+                                                            @if ($group == $trading_account_default_group)
+                                                            <option value="{!! $group !!}" selected>{!! $group !!}</option>
+                                                            @else
+                                                            <option value="{!! $group !!}">{!! $group !!}</option>
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                                 <div class="col-sm-3 mt-2 mt-sm-0">
                                                     <button id="tradingAccountDefaultGroupButton" type="button" class="btn btn-success">Save</button>
@@ -43,7 +52,13 @@
 
             $('body').on('click', 'button[id=tradingAccountDefaultGroupButton]', function(e) {
                 $("#tradingAccountDefaultGroupButton").prop("disabled", true);
-                var group = $('input[id=tradingAccountDefaultGroupInput]').val();
+
+                var group = $("select[id=tradingAccountDefaultGroupSelect").val();
+                if(group == null || group == "*") {
+                    toastr.error("Please select a group", 'Error')
+                    $("#tradingAccountDefaultGroupButton").prop("disabled", false);
+                    return;
+                }
 
                 $.ajax({
                     type: "post",
