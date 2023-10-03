@@ -106,6 +106,7 @@ Route::group(['middleware' => ['accessToken']], function () {
 
     Route::prefix('/withdrawals')->group(function () {
         Route::get('/', 'App\Http\Controllers\WithdrawalsController@initWithdrawalsPage')->name("withdrawal.requests");
+        Route::get('/detail', 'App\Http\Controllers\WithdrawalsController@initWithdrawalDetailPage')->name("withdrawal.detail");
     });
 
     Route::prefix('/admins')->group(function () {
@@ -128,6 +129,6 @@ Route::group(['middleware' => ['accessToken']], function () {
     Route::get('/customers', 'App\Http\Controllers\ClientsController@initCustomerPage')->name("customers");
 
     Route::get('/user', 'App\Http\Controllers\ClientsController@initCustomerDetailPage')->name("user");
-    Route::get('/withdrawal_detail', 'App\Http\Controllers\WithdrawalsController@initWithdrawalDetailPage')->name("withdrawal_detail");
+    
 
 });
