@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Http\Controllers\WebRequestController;
 use App\Http\Controllers\MetatraderController;
+use App\Http\Controllers\WithdrawalsController;
 
 class ClientsController extends Controller
 {
@@ -17,6 +18,7 @@ class ClientsController extends Controller
         $this->BASE_URL = env("API_SERVER_BASE_URL");
         $this->ReqController = new WebRequestController();
         $this->MetatraderController = new MetatraderController();
+        $this->WithdrawalsController = new WithdrawalsController();
     }
     
     public function initCustomerPage(Request $request)
@@ -30,11 +32,14 @@ class ClientsController extends Controller
     public function initCustomerDetailPage(Request $request)
     {
         $trading_accounts = $this->getTradingAccountByIds($request->get('id'));
+        $withdraws = $this->WithdrawalsController->getWithdrawalByClientIds($request->get('id'))->withdraws;
+
+        // dd($withdraws);
 
         return view('user', [
             'user' => $this->getCustomerByIds($request->get('id')),
             'trading_accounts' => $this->getTradingAccountByIds($request->get('id'))->getData()->accounts,
-            'withdrawal_requests' => $this->getWithdrawalsByIds($request->get('id'), $request->get('client_id')),
+            'withdrawals' => $withdraws,
             'referenced_users' => $this->getReferencedByIds($request->get('id')),
         ]);
     }
@@ -59,7 +64,7 @@ class ClientsController extends Controller
 
     public function getCustomerByIds(int $id)
     {
-        $res = $this->ReqController->get($this->BASE_URL . "users/", ['id' => $id]);
+        $res = $this->ReqController->get($this->BASE_URL . "users/", ['user_id' => $id]);
         $json = json_decode($res->getBody());
         
         $res = $this->ReqController->get($this->BASE_URL . "users/clients", ['user_id' => $id]);
@@ -87,11 +92,6 @@ class ClientsController extends Controller
             ]
         ];
         return response()->json($datas)->getData()->clients->datas->$id;
-    }
-
-    public function getWithdrawalsByIds(int $id, int $client_id)
-    {
-        return app('App\Http\Controllers\WithdrawalsController')->getWithdrawalByClientIds($id, $client_id);
     }
 
     public function getReferencedByIds(int $id)

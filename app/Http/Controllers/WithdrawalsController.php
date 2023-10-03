@@ -19,16 +19,19 @@ class WithdrawalsController extends Controller
 
     public function initWithdrawalsPage(Request $request)
     {
+        // dd($this->getWithdrawals($request));
         return view('withdrawals_requests', [
-            'withdrawals_requests' => $this->getWithdrawals($request),
+            'withdraws' => $this->getWithdrawals($request)->withdraws,
             'statistics_information' => $this->getStatisticsCards($request),
         ]);
     }
 
     public function initWithdrawalDetailPage(Request $request)
     {
+        // dd($this->getWithdrawalStatuses()->statuses);
         return view('withdrawal_detail', [
-            'withdrawal_details' => $this->getWithdrawalByIds($request->get('id'), $request->get('user_id')),
+            'withdrawal' => $this->getWithdrawalById($request->get('id'))->withdraw,
+            'withdrawal_statuses' => $this->getWithdrawalStatuses()->statuses
         ]);
     }
 
@@ -71,6 +74,9 @@ class WithdrawalsController extends Controller
     {
         $res = $this->ReqController->get($this->BASE_URL . "users/withdraws", ['limit' => 100, 'offset' => 0]);
         $json = json_decode($res->getBody());
+        return response()->json($json)->getData();
+
+
         $withdraws = [];
         foreach ($json->withdraws as $withdraw) {
             $new_withdraw = [
@@ -103,64 +109,36 @@ class WithdrawalsController extends Controller
         return response()->json($datas)->getData();
     }
 
-    public function getWithdrawalByIds(int $id, int $user_id)
+    public function getWithdrawalById(int $id)
     {
-        $res = $this->ReqController->get($this->BASE_URL . "users/withdraws", ['user_id' => $user_id]);
+        $res = $this->ReqController->get($this->BASE_URL . "withdraws/", ['id' => $id]);
         $json = json_decode($res->getBody());
-        $withdraws = [];
-        foreach ($json->withdraws as $withdraw) {
-            if ($withdraw->id == $id) {
-                $new_withdraw = [
-                    $withdraw->id => [
-                        'Withdrawal_ID' => $withdraw->id,
-                        'Client_ID' => $withdraw->user_id,
-                        'Request_Date' => $withdraw->created_at,
-                        'Withdrawal_Status' => $withdraw->withdraw_status->name,
-                        'Requested_Amount' => $withdraw->amount,
-                        'Bank_Name' => $withdraw->bic,
-                        'IBAN' => $withdraw->iban,
-                        'Account_Holder' => $withdraw->holder,
-                        'BIC' => $withdraw->bic,
-                    ],
-                ];
-                array_push($withdraws, $new_withdraw[$withdraw->id]);
-            }
-        }
-        $datas = [
-            "status" => "200",
-            "withdrawals" => [
-                "datas" =>
-                $withdraws
-
-            ]
-        ];
-        return response()->json($datas)->getData()->withdrawals->datas;
+        return response()->json($json)->getData();
     }
 
     public function setWithdrawalById(Request $request)
     {
         $res = $this->ReqController->post($this->BASE_URL . "withdraws/update", [
-            'json' => [
-                'id' => $request->input('id'),
-                'withdraw_status_id' => $request->input('status_id'),
-                'comment' => 'Admin# ' . strval(session()->get('admin_id')) . ' changed status from ' . $request->input('last_status') . ' to ' . $request->input('status_id'),
-            ]
+            'id' => $request->input('id'),
+            'withdraw_status_id' => $request->input('status_id'),
+            'comment' => 'Admin# ' . strval(session()->get('admin_id')) . ' changed status from ' . $request->input('last_status') . ' to ' . $request->input('status_id'),
         ]);
         $json = json_decode($res->getBody());
 
         return response()->json($json)->getData();
     }
 
-    public function getWithdrawalByClientIds(int $id, int $client_id)
+    public function getWithdrawalByClientIds(int $id)
     {
         $res = $this->ReqController->get($this->BASE_URL . "users/withdraws", ['user_id' => $id]);
         $json = json_decode($res->getBody());
+        return response()->json($json)->getData(); 
+
         $withdraws = [];
         foreach ($json->withdraws as $withdraw) {
             $new_withdraw = [
                 $withdraw->id => [
                     'Withdrawal_ID' => $withdraw->id,
-                    'Client_ID' => $client_id,
                     'User_ID' => $withdraw->user_id,
                     'Request_Date' => $withdraw->created_at,
                     'Withdrawal_Status' => $withdraw->withdraw_status->name,
@@ -183,5 +161,12 @@ class WithdrawalsController extends Controller
             ]
         ];
         return response()->json($datas)->getData()->withdrawals->datas[0];
+    }
+
+    public function getWithdrawalStatuses()
+    {
+        $res = $this->ReqController->get($this->BASE_URL . "withdraws/statuses");
+        $json = json_decode($res->getBody());
+        return response()->json($json)->getData();
     }
 }

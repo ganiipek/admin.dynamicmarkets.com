@@ -7,13 +7,13 @@
                         <div class="card exchange">
                             <div class="card-header d-block border-0">
 
-                                <h2 class="heading">Withdrawal Details</h2>
+                                <h2 class="heading">Withdrawal#{{ $withdrawal->id }} Details</h2>
                                 <div class="balance">
                                     <div class="header-content">
                                         <h6> Amount to Withdrawal</h6>
-                                        <span>{{$withdrawal_details[0]->Request_Date}}</span>
+                                        <span>{{ $withdrawal->created_at }}</span>
                                     </div>
-                                    <h4 class="count">$ {{$withdrawal_details[0]->Requested_Amount}}</h4>
+                                    <h4 class="count">$ {{ $withdrawal->amount }}</h4>
                                 </div>
 
                             </div>
@@ -23,8 +23,15 @@
                                         <div class="input_exchange">
                                             <h4>User ID</h4>
                                             <input type="text" class="input-select" disabled
-                                                value="{{$withdrawal_details[0]->Client_ID}}"
-                                                placeholder="{{$withdrawal_details[0]->Client_ID}}">
+                                                value="{{$withdrawal->user_id}}" placeholder="{{$withdrawal->user_id}}">
+                                        </div>
+                                        <div class="crypto-select">
+                                            <div class="input_exchange">
+                                                <h4>User Email</h4>
+                                                <input type="text" class="input-select" disabled
+                                                    value={{ $withdrawal->user->email }}"
+                                                    placeholder="{{ $withdrawal->user->email }}">
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -34,17 +41,17 @@
                                 <div class="selling">
                                     <div class="form_exchange">
                                         <div class="input_exchange">
-                                            <h4>Bank Name</h4>
+                                            <h4>Account Holder</h4>
                                             <input type="text" class="input-select" disabled
-                                                value="{{$withdrawal_details[0]->Bank_Name}}"
-                                                placeholder="{{$withdrawal_details[0]->Bank_Name}}">
+                                                value="{{ $withdrawal->holder }}"
+                                                placeholder="{{ $withdrawal->holder }}">
                                         </div>
                                         <div class="crypto-select">
                                             <div class="input_exchange">
-                                                <h4>Account Holder</h4>
+                                                <h4>From Account ID</h4>
                                                 <input type="text" class="input-select" disabled
-                                                    value="{{$withdrawal_details[0]->Account_Holder}}"
-                                                    placeholder="{{$withdrawal_details[0]->Account_Holder}}">
+                                                    value="MT5 -> {{ $withdrawal->from_account }}"
+                                                    placeholder="{{ $withdrawal->from_account }}">
                                             </div>
                                         </div>
                                     </div>
@@ -55,32 +62,30 @@
                                         <div class="input_exchange">
                                             <h4>IBAN</h4>
                                             <input type="text" class="input-select" disabled
-                                                value="{{$withdrawal_details[0]->IBAN}}"
-                                                placeholder="{{$withdrawal_details[0]->IBAN}}">
+                                                value="{{ $withdrawal->iban }}" placeholder="{{ $withdrawal->iban }}">
                                         </div>
                                         <div class="crypto-select">
                                             <div class="input_exchange">
                                                 <h4>BIC</h4>
                                                 <input type="text" class="input-select" disabled
-                                                    value="{{$withdrawal_details[0]->BIC}}"
-                                                    placeholder="{{$withdrawal_details[0]->BIC}}">
+                                                    value="{{ $withdrawal->bic }}" placeholder="{{ $withdrawal->bic }}">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <br>
-                                @if($withdrawal_details[0]->Withdrawal_Status == "Completed")
+                                @if($withdrawal->withdraw_status->name == "Completed")
                                 <button disabled class="btn btn-success w-100 mt-3">Completed</button>
                                 @endif
-                                @if($withdrawal_details[0]->Withdrawal_Status == "Rejected")
+                                @if($withdrawal->withdraw_status->name == "Rejected")
                                 <button disabled class="btn btn-danger w-100 mt-3">Rejected</button>
                                 @endif
-                                @if($withdrawal_details[0]->Withdrawal_Status == "Pending")
-                                <button
-                                    onclick="rejectWithdrawal('{{ $withdrawal_details[0]->Withdrawal_ID }}', '{{ $withdrawal_details[0]->Withdrawal_Status }}')"
+                                @if($withdrawal->withdraw_status->name == "Pending")
+                                <button id="rejectWithdrawalButton" type="button" withdraw_id="{{ $withdrawal->id }}"
+                                    withdraw_status="{{ $withdrawal->withdraw_status->name }}"
                                     class="btn btn-danger w-100 mt-3">Reject</button>
-                                <button id="acceptWithdrawalButton"
-                                    onclick="acceptWithdrawal('{{ $withdrawal_details[0]->Withdrawal_ID }}', '{{ $withdrawal_details[0]->Withdrawal_Status }}')"
+                                <button id="acceptWithdrawalButton" type="button" withdraw_id="{{ $withdrawal->id }}"
+                                    withdraw_status="{{ $withdrawal->withdraw_status->name }}"
                                     class="btn btn-success w-100 mt-3">Accept</button>
                                 @endif
                             </div>
@@ -119,37 +124,62 @@
         <script src="{{ asset('js/styleSwitcher.js')}}"></script>
         <script>
         $('body').on('click', 'button[id=acceptWithdrawalButton]', function(e) {
+            $("#acceptWithdrawalButton").prop("disabled", true);
+            $("#rejectWithdrawalButton").prop("disabled", true);
 
-        });
-        $(function() {
-            
-            function acceptWithdrawal(id, last_status) {
-                updateStatus(3, id, last_status);
-            }
+            var id = $(this).attr('withdraw_id');
+            var last_status = $(this).attr('withdraw_status');
 
-            function rejectWithdrawal(id, last_status) {
-                updateStatus(4, id, last_status);
-            }
-
-            function updateStatus(status_id, id, last_status) {
-                $.ajax({
-                    type: "post",
-                    url: '{{ action("App\\Http\\Controllers\\WithdrawalsController@setWithdrawalById") }}',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        status_id: status_id,
-                        id: id,
-                        last_status: last_status
-                    },
-                    success: function(response) {
-                        console.log(response)
-                    },
-                    error: function(error) {
-                        console.log(error)
-                        alert(error.responseJSON.message);
-                    }
-                });
+            $.ajax({
+                type: "post",
+                url: '{{ action("App\\Http\\Controllers\\WithdrawalsController@setWithdrawalById") }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    status_id: 3,
+                    id: id,
+                    last_status: last_status
+                },
+                success: function(response) {
+                    console.log(response)
+                    toastr.success(response, 'Success')
+                },
+                error: function(error) {
+                    console.log(error)
+                    toastr.error(response, 'Error')
+                    $("#acceptWithdrawalButton").prop("disabled", false);
+                    $("#rejectWithdrawalButton").prop("disabled", false);
+                }
             });
+        });
+        
+        $('body').on('click', 'button[id=rejectWithdrawalButton]', function(e) {
+            $("#acceptWithdrawalButton").prop("disabled", true);
+            $("#rejectWithdrawalButton").prop("disabled", true);
+
+            var id = $(this).attr('withdraw_id');
+            var last_status = $(this).attr('withdraw_status');
+
+            $.ajax({
+                type: "post",
+                url: '{{ action("App\\Http\\Controllers\\WithdrawalsController@setWithdrawalById") }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    status_id: 4,
+                    id: id,
+                    last_status: last_status
+                },
+                success: function(response) {
+                    console.log(response)
+                    toastr.success(response, 'Success')
+                },
+                error: function(error) {
+                    console.log(error)
+                    toastr.error(response, 'Error')
+                    $("#acceptWithdrawalButton").prop("disabled", false);
+                    $("#rejectWithdrawalButton").prop("disabled", false);
+                }
+            });
+        });
         </script>
 
     </x-slot>
