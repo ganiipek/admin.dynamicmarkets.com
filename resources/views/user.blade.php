@@ -15,8 +15,16 @@
                                             <div class="user-details">
                                                 <div>
                                                     <div class="profile-name">
-                                                        <h3 class="name">{{$user->Name}}</h3>
-                                                        <h5> ID: {{$user->Client_ID}}</h5>
+                                                        <h3 class="name">
+                                                            @if ($user->middlename)
+                                                            {{ $user->name }} {{ $user->middlename }}
+                                                            {{ $user->lastname }}
+                                                            @else
+                                                            {{ $user->name }} {{ $user->lastname }}
+                                                            @endif
+                                                        </h3>
+                                                        <h5> ID: {{$user->id}}</h5>
+                                                        <h5> CLient ID: {{ $user->user_client->login ?? 0 }}</h5>
                                                         <span>
                                                             <svg width="16" height="21" viewBox="0 0 16 21" fill="none"
                                                                 xmlns="http://www.w3.org/2000/svg">
@@ -24,7 +32,7 @@
                                                                     d="M8 0.5C5.87827 0.5 3.84344 1.34285 2.34315 2.84315C0.842855 4.34344 0 6.37827 0 8.5C0 13.9 7.05 20 7.35 20.26C7.53113 20.4149 7.76165 20.5001 8 20.5001C8.23835 20.5001 8.46887 20.4149 8.65 20.26C9 20 16 13.9 16 8.5C16 6.37827 15.1571 4.34344 13.6569 2.84315C12.1566 1.34285 10.1217 0.5 8 0.5ZM8 18.15C5.87 16.15 2 11.84 2 8.5C2 6.9087 2.63214 5.38258 3.75736 4.25736C4.88258 3.13214 6.4087 2.5 8 2.5C9.5913 2.5 11.1174 3.13214 12.2426 4.25736C13.3679 5.38258 14 6.9087 14 8.5C14 11.84 10.13 16.16 8 18.15ZM8 4.5C7.20887 4.5 6.43552 4.7346 5.77772 5.17412C5.11992 5.61365 4.60723 6.23836 4.30448 6.96927C4.00173 7.70017 3.92252 8.50444 4.07686 9.28036C4.2312 10.0563 4.61216 10.769 5.17157 11.3284C5.73098 11.8878 6.44371 12.2688 7.21964 12.4231C7.99556 12.5775 8.79983 12.4983 9.53073 12.1955C10.2616 11.8928 10.8864 11.3801 11.3259 10.7223C11.7654 10.0645 12 9.29113 12 8.5C12 7.43913 11.5786 6.42172 10.8284 5.67157C10.0783 4.92143 9.06087 4.5 8 4.5ZM8 10.5C7.60444 10.5 7.21776 10.3827 6.88886 10.1629C6.55996 9.94318 6.30362 9.63082 6.15224 9.26537C6.00087 8.89991 5.96126 8.49778 6.03843 8.10982C6.1156 7.72186 6.30608 7.36549 6.58579 7.08579C6.86549 6.80608 7.22186 6.6156 7.60982 6.53843C7.99778 6.46126 8.39991 6.50087 8.76537 6.65224C9.13082 6.80362 9.44318 7.05996 9.66294 7.38886C9.8827 7.71776 10 8.10444 10 8.5C10 9.03043 9.78929 9.53914 9.41421 9.91421C9.03914 10.2893 8.53043 10.5 8 10.5Z"
                                                                     fill="#666666" />
                                                             </svg>
-                                                            {{$user->Nationality}}
+                                                            {{$user->country}}
                                                         </span>
                                                     </div>
                                                     <div class="user-contact">
@@ -37,7 +45,7 @@
                                                                         fill="#FCFCFC" />
                                                                 </svg>
                                                             </div>
-                                                            <h4 class="details">{{$user->Phone}}</h4>
+                                                            <h4 class="details">{{$user->phone}}</h4>
                                                         </div>
                                                         <div class="user-email">
                                                             <div class="dz-media">
@@ -48,97 +56,49 @@
                                                                         fill="#FCFCFC" />
                                                                 </svg>
                                                             </div>
-                                                            <h4 class="details">{{$user->mail}}</h4>
+                                                            <h4 class="details">{{$user->email}}</h4>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <!-- <div class="side-detail">
-                                                    <div class="edit-profiil">
+                                                    <div class="edit-profil">
                                                         <button class="btn light btn-primary btn-sm text-nowrap"
                                                             data-bs-toggle="modal" data-bs-target="#exampleModal">Edit
                                                             User</button>
                                                     </div>
                                                 </div> -->
                                             </div>
-
                                         </div>
                                     </div>
-
                                 </div>
-
                             </div>
                             <div class="col-xl-4">
                                 <!-- ----column---- -->
-                                <div class="col-xl-12">
-                                    <div class="card recent-activity">
-                                        <div class="card-header pb-0 border-0">
-                                            <h2 class="heading mb-0">Recent Activity</h2>
-                                        </div>
-                                        <div class="card-body p-0 pb-3">
-                                            <!-- <div class="recent-info">
-												<div class="recent-content">
-													<span class="recent_icon">
-														<svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-															<path d="M14.0038 25.4285C11.7434 25.4285 9.53382 24.7582 7.6544 23.5024C5.77498 22.2466 4.31015 20.4617 3.44515 18.3734C2.58015 16.2851 2.35382 13.9872 2.7948 11.7703C3.23577 9.55337 4.32424 7.51699 5.92255 5.91868C7.52087 4.32036 9.55724 3.2319 11.7742 2.79092C13.9911 2.34995 16.289 2.57627 18.3773 3.44127C20.4656 4.30627 22.2505 5.7711 23.5063 7.65052C24.7621 9.52994 25.4323 11.7395 25.4323 13.9999C25.429 17.0299 24.2239 19.9349 22.0813 22.0774C19.9388 24.22 17.0338 25.4251 14.0038 25.4285ZM14.0038 4.85704C12.1955 4.85704 10.4278 5.39326 8.92427 6.39789C7.42074 7.40252 6.24887 8.83044 5.55687 10.5011C4.86487 12.1717 4.68381 14.01 5.03659 15.7836C5.38937 17.5571 6.26014 19.1862 7.5388 20.4649C8.81745 21.7435 10.4465 22.6143 12.2201 22.9671C13.9936 23.3199 15.832 23.1388 17.5026 22.4468C19.1732 21.7548 20.6011 20.5829 21.6058 19.0794C22.6104 17.5759 23.1466 15.8082 23.1466 13.9999C23.1439 11.5759 22.1798 9.25196 20.4657 7.53793C18.7517 5.8239 16.4278 4.85976 14.0038 4.85704Z" fill="#FCFCFC" />
-															<path d="M15.1466 18.5714H11.7181C11.4149 18.5714 11.1243 18.451 10.9099 18.2367C10.6956 18.0224 10.5752 17.7317 10.5752 17.4286C10.5752 17.1255 10.6956 16.8348 10.9099 16.6204C11.1243 16.4061 11.4149 16.2857 11.7181 16.2857H15.1466V15.1428H12.8609C12.2547 15.1428 11.6733 14.902 11.2447 14.4734C10.816 14.0447 10.5752 13.4633 10.5752 12.8571V11.7143C10.5752 11.1081 10.816 10.5267 11.2447 10.098C11.6733 9.66937 12.2547 9.42856 12.8609 9.42856H16.2895C16.5926 9.42856 16.8833 9.54897 17.0976 9.76329C17.3119 9.97762 17.4323 10.2683 17.4323 10.5714C17.4323 10.8745 17.3119 11.1652 17.0976 11.3795C16.8833 11.5939 16.5926 11.7143 16.2895 11.7143H12.8609V12.8571H15.1466C15.7528 12.8571 16.3342 13.0979 16.7629 13.5266C17.1915 13.9553 17.4323 14.5366 17.4323 15.1428V16.2857C17.4323 16.8919 17.1915 17.4733 16.7629 17.9019C16.3342 18.3306 15.7528 18.5714 15.1466 18.5714Z" fill="#FCFCFC" />
-															<path d="M14.0032 11.7142C13.7001 11.7142 13.4094 11.5937 13.1951 11.3794C12.9808 11.1651 12.8604 10.8744 12.8604 10.5713V9.42844C12.8604 9.12534 12.9808 8.83465 13.1951 8.62032C13.4094 8.40599 13.7001 8.28558 14.0032 8.28558C14.3063 8.28558 14.597 8.40599 14.8113 8.62032C15.0257 8.83465 15.1461 9.12534 15.1461 9.42844V10.5713C15.1461 10.8744 15.0257 11.1651 14.8113 11.3794C14.597 11.5937 14.3063 11.7142 14.0032 11.7142ZM14.0032 19.7142C13.7001 19.7142 13.4094 19.5937 13.1951 19.3794C12.9808 19.1651 12.8604 18.8744 12.8604 18.5713V17.4284C12.8604 17.1253 12.9808 16.8346 13.1951 16.6203C13.4094 16.406 13.7001 16.2856 14.0032 16.2856C14.3063 16.2856 14.597 16.406 14.8113 16.6203C15.0257 16.8346 15.1461 17.1253 15.1461 17.4284V18.5713C15.1461 18.8744 15.0257 19.1651 14.8113 19.3794C14.597 19.5937 14.3063 19.7142 14.0032 19.7142Z" fill="#FCFCFC" />
-														</svg>
-													</span>
-													<div class="user-name">
-														<h6>Payment </h6>
-														<span>2 March 2021, 13:45 PM</span>
-													</div>
-												</div>
-												<div class="count">
-													<span>+$2000</span>
-												</div>
-											</div>
-											<div class="recent-info">
-												<div class="recent-content">
-													<span class="recent_icon">
-														<svg width="24" height="20" viewBox="0 0 24 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-															<path d="M20.0038 0.857117H4.00377C3.09445 0.857117 2.22238 1.21834 1.5794 1.86132C0.936419 2.5043 0.575195 3.37637 0.575195 4.28569V15.7143C0.575195 16.6236 0.936419 17.4956 1.5794 18.1386C2.22238 18.7816 3.09445 19.1428 4.00377 19.1428H20.0038C20.9131 19.1428 21.7852 18.7816 22.4281 18.1386C23.0711 17.4956 23.4323 16.6236 23.4323 15.7143V4.28569C23.4323 3.37637 23.0711 2.5043 22.4281 1.86132C21.7852 1.21834 20.9131 0.857117 20.0038 0.857117ZM2.86091 4.28569C2.86091 3.98258 2.98132 3.69189 3.19565 3.47757C3.40997 3.26324 3.70066 3.14283 4.00377 3.14283H20.0038C20.3069 3.14283 20.5976 3.26324 20.8119 3.47757C21.0262 3.69189 21.1466 3.98258 21.1466 4.28569V5.42854H2.86091V4.28569ZM21.1466 15.7143C21.1466 16.0174 21.0262 16.3081 20.8119 16.5224C20.5976 16.7367 20.3069 16.8571 20.0038 16.8571H4.00377C3.70066 16.8571 3.40997 16.7367 3.19565 16.5224C2.98132 16.3081 2.86091 16.0174 2.86091 15.7143V7.71426H21.1466V15.7143Z" fill="#FCFCFC" />
-															<path d="M5.14676 11.1429H7.43248C7.73558 11.1429 8.02627 11.0225 8.2406 10.8081C8.45493 10.5938 8.57533 10.3031 8.57533 10C8.57533 9.6969 8.45493 9.40621 8.2406 9.19188C8.02627 8.97756 7.73558 8.85715 7.43248 8.85715H5.14676C4.84366 8.85715 4.55297 8.97756 4.33864 9.19188C4.12431 9.40621 4.00391 9.6969 4.00391 10C4.00391 10.3031 4.12431 10.5938 4.33864 10.8081C4.55297 11.0225 4.84366 11.1429 5.14676 11.1429Z" fill="#FCFCFC" />
-														</svg>
-													</span>
-													<div class="user-name">
-														<h6>Subcription</h6>
-														<span>2 March 2021, 13:45 PM</span>
-													</div>
-												</div>
-												<div class="count">
-													<span>-$120</span>
-												</div>
-											</div> -->
-
+                                <div class="card">
+                                    <!-- <div class="card-header">
+                                        <h4 class="card-title">Input Style</h4>
+                                    </div> -->
+                                    <div class="card-body">
+                                        <div class="basic-form text-center">
+                                            <div class="mb-3">
+                                                <button type="button" class="btn btn-primary" data-toggle="modal"
+                                                    data-target="#editCustomerModal">Edit Customer</button>
+                                            </div>
+                                            @if ($user->user_client != null)
+                                            <div class="mb-3">
+                                                <button type="button" class="btn btn-secondary" data-toggle="modal"
+                                                    data-target="#addTradingAccountModal">Add Trading Account</button>
+                                            </div>
+                                            @else
+                                            <div class="mb-3">
+                                                <button type="button" class="btn btn-warning" data-toggle="modal"
+                                                    data-target="#createClientModal">Create Client</button>
+                                            </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
                                 <!-- ----/column---- -->
-                            </div>
-                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-                                aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Edit User</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-
-                                            <label for="basic-url" class="form-label d-block">Enter Name</label>
-                                            <input type="text" class="form-control w-100" placeholder="Username">
-                                            <label for="basic-url" class="form-label d-block">E-Mail</label>
-                                            <input type="text" class="form-control w-100" placeholder="E-Mail">
-
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" id="submit_user_edit" class="btn btn-primary">Save
-                                                changes</button>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                             <!-- ----/column---- -->
                             <div class="col-xl-12 wow fadeInUp" data-wow-delay="0.3s">
@@ -414,36 +374,488 @@
                                 <!-- ----/column-- -->
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+
+        <!-- Create Client Modal -->
+        <div class="modal fade" id="createClientModal" tabindex="-1" role="dialog"
+            aria-labelledby="createClientModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form id="createClientForm">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title">Create Client</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="basic-form">
+                                <div class="row">
+                                    <div class="mb-3 col-md-3">
+                                        <label class="form-label">Title</label>
+                                        <select id="input_title" name="input_title"
+                                            class="default-select form-control wide">
+                                            <option id="Mr." {{ $user->title == "Mr." ? "selected":"" }}>Mr.</option>
+                                            <option id="Mrs." {{ $user->title == "Mrs." ? "selected":"" }}>Mrs.</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-md-3">
+                                        <label class="form-label">Gender</label>
+                                        <select id="input_gender" name="input_gender"
+                                            class="default-select form-control wide">
+                                            <option id="Male" {{ $user->gender == "Male" ? "selected":"" }}>Male</option>
+                                            <option id="Female" {{ $user->gender == "Female" ? "selected":"" }}>Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label">Birthdate</label>
+                                        <input type="text" class="form-control" placeholder="2017-06-04"
+                                            id="input_birthdate" name="input_birthdate" value="{{ \Carbon\Carbon::parse($user->birthdate)->format('Y-m-d') }}">
+                                    </div>
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label">First Name</label>
+                                        <input name="input_name" type="text" class="form-control"
+                                            placeholder="First Name" value="{{ $user->name }}">
+                                    </div>
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label">Middle Name</label>
+                                        <input name="input_middlename" type="text" class="form-control"
+                                            placeholder="Middle Name" value="{{ $user->middlename }}">
+                                    </div>
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label">Last Name</label>
+                                        <input name="input_lastname" type="text" class="form-control"
+                                            placeholder="Last Name" value="{{ $user->lastname }}">
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label">E-Mail</label>
+                                        <input name="input_email" type="email" class="form-control"
+                                            placeholder="E-Mail" value="{{ $user->email }}" disabled>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label">Phone</label>
+                                        <input name="input_phone" type="text" class="form-control" 
+                                            placeholder="Phone" value="{{ $user->phone }}">
+                                    </div>
+                                    <div class="mb-3 col-md-9">
+                                        <label class="form-label">Address</label>
+                                        <input name="input_address" type="text" class="form-control"
+                                            placeholder="Address" value="{{ $user->address }}">
+                                    </div>
+                                    <div class="mb-3 col-md-3">
+                                        <label class="form-label">Zip</label>
+                                        <input name="input_zip" type="text" class="form-control" 
+                                            placeholder="Zip Code" value="{{ $user->postal_code }}">
+                                    </div>
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label">Country</label>
+                                        <input name="input_country" type="text" class="form-control"
+                                            placeholder="Country" value="{{ $user->country }}">
+                                    </div>
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label">City</label>
+                                        <input name="input_city" type="text" class="form-control" placeholder="City"
+                                            value="{{ $user->city }}">
+                                    </div>
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label">State</label>
+                                        <input name="input_state" type="text" class="form-control" placeholder="State"
+                                        value="{{ $user->state }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+                            <button id="editCustomerButton" type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add Trading Account Modal -->
+        <div class="modal fade" id="addTradingAccountModal" tabindex="-1" role="dialog"
+            aria-labelledby="addTradingAccountModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <h5 class="modal-title">Add Trading Account</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="mb-3 d-block">
-                            <label for="basic-url" class="form-label d-block">Enter Name</label>
-                            <input type="text" class="form-control w-100" placeholder="Username" aria-label="Username"
-                                aria-describedby="basic-addon1">
-                        </div>
-                        <div class="mb-3 d-block">
-                            <label for="basic-url" class="form-label d-block">Enter Position</label>
-                            <input type="text" class="form-control w-100" placeholder="Username" aria-label="Username"
-                                aria-describedby="basic-addon1">
+                        <div class="basic-form">
+                            <form>
+                                <div class="mb-3">
+                                    <label class="form-label">Name:</label>
+                                    <input id="input_name" name="input_name" type="text"
+                                        class="form-control input-default" placeholder="{{ $user->name }}"
+                                        value="{{ $user->name }} {{ $user->middlename }} {{ $user->lastname }}"
+                                        disabled>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Leverage:</label>
+                                    <select id="input_leverage" name="input_leverage"
+                                        class="default-select form-control">
+                                        <option value="100">1:100</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Group:</label>
+                                    <select id="input_group" name="input_group" class="default-select form-control">
+                                        <option value="demo\forex-hedge-usd-01">demo\forex-hedge-usd-01</option>
+                                        <option value="GMD\GMD\A">GMD\GMD\A</option>
+                                    </select>
+                                </div>
+                            </form>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+                        <button id="addTradingAccountButton" type="button" class="btn btn-primary">Add</button>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Edit Customer Modal -->
+        <div class="modal fade" id="editCustomerModal" tabindex="-1" role="dialog"
+            aria-labelledby="editCustomerModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <form id="editCustomer">
+                        @csrf
+                        <div class="modal-header">
+                            <h5 class="modal-title">Edit Customer</h5>
+                            <button type="button" class="btn-close" data-dismiss="modal"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="basic-form">
+                                <div class="row">
+                                    <div class="mb-3 col-md-3">
+                                        <label class="form-label">Title</label>
+                                        <select id="input_title" name="input_title"
+                                            class="default-select form-control wide">
+                                            <option id="Mr." {{ $user->title == "Mr." ? "selected":"" }}>Mr.</option>
+                                            <option id="Mrs." {{ $user->title == "Mrs." ? "selected":"" }}>Mrs.</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-md-3">
+                                        <label class="form-label">Gender</label>
+                                        <select id="input_gender" name="input_gender"
+                                            class="default-select form-control wide">
+                                            <option id="Male" {{ $user->gender == "Male" ? "selected":"" }}>Male</option>
+                                            <option id="Female" {{ $user->gender == "Female" ? "selected":"" }}>Female</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label">Birthdate</label>
+                                        <input type="text" class="form-control" placeholder="2017-06-04"
+                                            id="input_birthdate" name="input_birthdate" value="{{ \Carbon\Carbon::parse($user->birthdate)->format('Y-m-d') }}">
+                                    </div>
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label">First Name</label>
+                                        <input name="input_name" type="text" class="form-control"
+                                            placeholder="First Name" value="{{ $user->name }}">
+                                    </div>
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label">Middle Name</label>
+                                        <input name="input_middlename" type="text" class="form-control"
+                                            placeholder="Middle Name" value="{{ $user->middlename }}">
+                                    </div>
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label">Last Name</label>
+                                        <input name="input_lastname" type="text" class="form-control"
+                                            placeholder="Last Name" value="{{ $user->lastname }}">
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label">E-Mail</label>
+                                        <input name="input_email" type="email" class="form-control"
+                                            placeholder="E-Mail" value="{{ $user->email }}" disabled>
+                                    </div>
+                                    <div class="mb-3 col-md-6">
+                                        <label class="form-label">Phone</label>
+                                        <input name="input_phone" type="text" class="form-control" 
+                                            placeholder="Phone" value="{{ $user->phone }}">
+                                    </div>
+                                    <div class="mb-3 col-md-9">
+                                        <label class="form-label">Address</label>
+                                        <input name="input_address" type="text" class="form-control"
+                                            placeholder="Address" value="{{ $user->address }}">
+                                    </div>
+                                    <div class="mb-3 col-md-3">
+                                        <label class="form-label">Zip</label>
+                                        <input name="input_zip" type="text" class="form-control" 
+                                            placeholder="Zip Code" value="{{ $user->postal_code }}">
+                                    </div>
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label">Country</label>
+                                        <input name="input_country" type="text" class="form-control"
+                                            placeholder="Country" value="{{ $user->country }}">
+                                    </div>
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label">City</label>
+                                        <input name="input_city" type="text" class="form-control" placeholder="City"
+                                            value="{{ $user->city }}">
+                                    </div>
+                                    <div class="mb-3 col-md-4">
+                                        <label class="form-label">State</label>
+                                        <input name="input_state" type="text" class="form-control" placeholder="State"
+                                        value="{{ $user->state }}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+                            <button id="editCustomerButton" type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script>
+        $(function() {
+            $('body').on('click', 'button[id=addTradingAccountButton]', function(e) {
+                $("#addTradingAccountButton").prop("disabled", true);
+
+                var input_leverage = $('#input_leverage').val();
+                var input_group = $('#input_group').val();
+
+                $.ajax({
+                    type: "post",
+                    url: '{{ action("App\\Http\\Controllers\\MetatraderController@addTradingAccount") }}',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        user_id: '{{ $user->id }}',
+                        name: '{{ $user->name }}',
+                        middlename: '{{ $user->middlename }}',
+                        lastname: '{{ $user->lastname }}',
+                        email: '{{ $user->email }}',
+                        phone: '{{ $user->phone }}',
+                        country: '{{ $user->country }}',
+                        city: '{{ $user->city }}',
+                        address: '{{ $user->address }}',
+                        zip: '{{ $user->postal_code }}',
+                        state: '{{ $user->state }}',
+                        group: input_group,
+                        leverage: input_leverage
+                    },
+                    success: function(response) {
+                        toastr.success(response.message);
+                        $('#addTradingAccountModal').modal('hide');
+                        location.reload();
+                    },
+                    error: function($error) {
+                        toastr.error($error.responseText)
+                        console.log($error)
+                        $("#addTradingAccountButton").prop("disabled", false);
+                    }
+                });
+            })
+        });
+
+        $('input[name="input_birthdate"]').bootstrapMaterialDatePicker({
+            weekStart: 0,
+            time: false
+        });
+
+        $("#createClientForm").validate({
+            errorClass: 'is-invalid',
+            rules: {
+                input_title: {
+                    required: true
+                },
+                input_name: {
+                    required: true
+                },
+                input_middlename: {
+                    required: false
+                },
+                input_lastname: {
+                    required: true
+                },
+                input_gender: {
+                    required: true
+                },
+                input_birthdate: {
+                    required: true,
+                },
+                input_email: {
+                    required: true
+                },
+                input_phone: {
+                    required: true,
+                },
+                input_country: {
+                    required: true,
+                },
+                input_city: {
+                    required: true,
+                },
+                input_address: {
+                    required: true,
+                },
+                input_zip: {
+                    required: true,
+                },
+                input_state: {
+                    required: true,
+                },
+            },
+            messages: {
+                // input_first_name: {
+                //     required: "Turnuva adı boş bırakılamaz."
+                // }
+            },
+            submitHandler: function(form) {
+                $("#editCustomerButton").prop("disabled", true);
+
+                let title = form.input_title.selectedOptions[0].id
+                let name = form.input_name.value
+                let middlename = form.input_middlename.value
+                let lastname = form.input_lastname.value
+                let gender = form.input_gender.selectedOptions[0].id
+                let birthdate = form.input_birthdate.value
+                let email = form.input_email.value
+                let phone = form.input_phone.value
+                let country = form.input_country.value
+                let city = form.input_city.value
+                let address = form.input_address.value
+                let zip = form.input_zip.value
+                let state = form.input_state.value
+
+                $.ajax({
+                    type: "post",
+                    url: '{{ action("App\\Http\\Controllers\\MetatraderController@addClient") }}',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        user_id: '{{ $user->id }}',
+                        title: title,
+                        name: name,
+                        middlename: middlename,
+                        lastname: lastname,
+                        gender: gender,
+                        birthdate: birthdate,
+                        email: email,
+                        phone: phone,
+                        country: country,
+                        city: city,
+                        address: address,
+                        zip: zip,
+                        state: state
+                    },
+                    success: function(response) {
+                        console.log(response)
+                        toastr.success("Customer edited successfully");
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.log(error)
+                        toastr.error(error.responseJSON.message);
+                        $("#editCustomerButton").prop("disabled", false);
+                    }
+                });
+            }
+        });
+
+        $("#editCustomer").validate({
+            errorClass: 'is-invalid',
+            rules: {
+                input_title: {
+                    required: true
+                },
+                input_name: {
+                    required: true
+                },
+                input_middlename: {
+                    required: false
+                },
+                input_lastname: {
+                    required: true
+                },
+                input_gender: {
+                    required: true
+                },
+                input_birthdate: {
+                    required: true,
+                },
+                input_phone: {
+                    required: true,
+                },
+                input_country: {
+                    required: true,
+                },
+                input_city: {
+                    required: true,
+                },
+                input_address: {
+                    required: true,
+                },
+                input_zip: {
+                    required: true,
+                },
+                input_state: {
+                    required: true,
+                },
+            },
+            messages: {
+                // input_first_name: {
+                //     required: "Turnuva adı boş bırakılamaz."
+                // }
+            },
+            submitHandler: function(form) {
+                $("#editCustomerButton").prop("disabled", true);
+
+                let title = form.input_title.selectedOptions[0].id
+                let name = form.input_name.value
+                let middlename = form.input_middlename.value
+                let lastname = form.input_lastname.value
+                let gender = form.input_gender.selectedOptions[0].id
+                let birthdate = form.input_birthdate.value
+                let phone = form.input_phone.value
+                let country = form.input_country.value
+                let city = form.input_city.value
+                let address = form.input_address.value
+                let zip = form.input_zip.value
+                let state = form.input_state.value
+
+                $.ajax({
+                    type: "put",
+                    url: '{{ action("App\\Http\\Controllers\\UsersController@update") }}',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        user_id: '{{ $user->id }}',
+                        title: title,
+                        name: name,
+                        middlename: middlename,
+                        lastname: lastname,
+                        gender: gender,
+                        birthdate: birthdate,
+                        phone: phone,
+                        country: country,
+                        city: city,
+                        address: address,
+                        zip: zip,
+                        state: state
+                    },
+                    success: function(response) {
+                        console.log(response)
+                        toastr.success("Customer edited successfully");
+                        location.reload();
+                    },
+                    error: function(error) {
+                        console.log(error)
+                        toastr.error(error.responseJSON.message);
+                        $("#editCustomerButton").prop("disabled", false);
+                    }
+                });
+            }
+        });
+        </script>
+
     </x-slot>
 </x-app-layout>

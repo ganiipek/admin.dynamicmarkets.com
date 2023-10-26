@@ -37,7 +37,7 @@ class ClientsController extends Controller
         // dd($withdraws);
 
         return view('user', [
-            'user' => $this->getCustomerByIds($request->get('id')),
+            'user' => $this->getUserById($request->get('id')),
             'trading_accounts' => $this->getTradingAccountByIds($request->get('id'))->getData()->accounts,
             'withdrawals' => $withdraws,
             'referenced_users' => $this->getReferencedByIds($request->get('id')),
@@ -62,13 +62,30 @@ class ClientsController extends Controller
         }
     }
 
-    public function getCustomerByIds(int $id)
+    public function getUserById(int $id)
     {
         $res = $this->ReqController->get($this->BASE_URL . "users/", ['user_id' => $id]);
         $json = json_decode($res->getBody());
-        
-        $res = $this->ReqController->get($this->BASE_URL . "users/clients", ['user_id' => $id]);
+        return $json->users;
+    }
+
+    public function getClientByUserId(int $user_id)
+    {
+        $res = $this->ReqController->get($this->BASE_URL . "users/clients", ['user_id' => $user_id]);
         $json_client = json_decode($res->getBody());
+        dd($json_client->user_clients);
+
+        return $json_client->user_clients;
+    }
+
+    public function getCustomerByIds(int $id)
+    {
+        $user = $this->getUserById($id);
+
+        return response()->json([
+            'user' => $user,
+            'deneme' => 'deneme'
+        ])->getData();
 
         $clientID = 0; // Başlangıçta varsayılan değeri 0 olarak ayarlayın
         if ($json_client->user_clients !== null) {
@@ -214,12 +231,17 @@ class ClientsController extends Controller
             ]
         ];
         foreach ($json as $key => $user) {
+            $kyc_status = NULL;
+            if ($user->user_sumsub !== null) {
+                $kyc_status = $this->getKYCStatus($user->user_sumsub->review_status, $user->user_sumsub->review_result);
+            }
+
             $newData = [
                 'Client_ID' => $user->id,
                 'Created_Date' => substr($user->created_at, 0, 10),
                 'Name' => $user->name,
                 'mail' => $user->email,
-                'KYC_Status' => $this->getKYCStatus($user->user_sumsub->review_status, $user->user_sumsub->review_result)
+                'KYC_Status' => $kyc_status
             ];
             $datas['clients']['datas'][$user->id] = $newData;
         }

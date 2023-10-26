@@ -48,6 +48,7 @@ class AuthController extends Controller
             // ->cookie('access_token', $responseData['accessToken'], 5, null, null, true, true)
             // ->cookie('refresh_token', $responseData['refreshToken'], 24*60, null, null, true, true);
         }
+
         if ($response->status() == 403) {
             if (in_array('message', $responseData)) {
                 return response()->json([
@@ -64,6 +65,7 @@ class AuthController extends Controller
 
         return response()->json([
             'error' => $responseData['message'],
+            // 'error' => $responseData,
         ], 401);
     }
 

@@ -159,6 +159,7 @@
                             <span class="nav-text">Customers</span>
                         </a>
                         <ul aria-expanded="false">
+                            <li><a href="{{ route('customers.create') }}">Create New Customer</a></li>
                             <li><a href="{{ route('customers') }}">List</a></li>
                             <li><a href="{{ route('withdrawal.requests') }}">Withdrawal Requests</a></li>
                             <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Metatrader</a>

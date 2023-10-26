@@ -16,6 +16,50 @@ class UsersController extends Controller
         $this->MetatraderController = new MetatraderController();
     }
 
+    public function add(Request $request)
+    {
+        $res = $this->ReqController->post($this->BASE_URL . "users/", [
+            'email' => $request->get('email'),
+            'password' => $request->get('password'),
+            'password_confirmation' => $request->get('password_confirmation'),
+            'title' => $request->get('title'),
+            'name' => $request->get('name'),
+            'middlename' => $request->get('middlename'),
+            'lastname' => $request->get('lastname'),
+            'gender' => $request->get('gender'),
+            'birthdate' => $request->get('birthdate'),
+            'phone' => $request->get('phone'),
+            'country' => $request->get('country'),
+            'city' => $request->get('city'),
+            'address' => $request->get('address'),
+            'postal_code' => $request->get('zip'),
+            'state' => $request->get('state')
+        ]);
+        $json = json_decode($res->getBody());
+        return response()->json($json, 200);
+    }
+
+    public function update(Request $request)
+    {
+        $res = $this->ReqController->put($this->BASE_URL . "users/", [
+            'user_id' => $request->get('user_id'),
+            'title' => $request->get('title'),
+            'name' => $request->get('name'),
+            'middlename' => $request->get('middlename'),
+            'lastname' => $request->get('lastname'),
+            'gender' => $request->get('gender'),
+            'birthdate' => $request->get('birthdate'),
+            'phone' => $request->get('phone'),
+            'country' => $request->get('country'),
+            'city' => $request->get('city'),
+            'address' => $request->get('address'),
+            'postal_code' => $request->get('zip'),
+            'state' => $request->get('state')
+        ]);
+        $json = json_decode($res->getBody());
+        return response()->json($json, 200);
+    }
+
     public function getAllByDate(Request $request)
     {
         $res = $this->ReqController->get($this->BASE_URL . "users/", [

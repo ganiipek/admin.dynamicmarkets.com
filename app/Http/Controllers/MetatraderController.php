@@ -154,4 +154,37 @@ class MetatraderController extends Controller
             ], $exception->getResponse()->getStatusCode());
         }
     }
+
+    public function addTradingAccount(Request $request)
+    {
+        try {
+            $res = $this->ReqController->post($this->BASE_URL . "metatraders/trading_accounts", [
+                'user_id' => $request->get('user_id'),
+                'name'=> $request->get('name'),
+                'middlename'=> $request->get('middlename'),
+                'lastname'=> $request->get('lastname'),
+                'email'=> $request->get('email'),
+                'phone'=> $request->get('phone'),
+                'country'=> $request->get('country'),
+                'city'=> $request->get('city'),
+                'address'=> $request->get('address'),
+                'zip'=> $request->get('zip'),
+                'state'=> $request->get('state'),
+                'group'=> $request->get('group'),
+                'leverage'=> $request->get('leverage'),
+                'agent'=> 0
+            ]);
+            $json = json_decode($res->getBody());
+
+            return response()->json([
+                'message' => "The trading account has been added successfully."
+            ], 200);
+
+        } catch (\GuzzleHttp\Exception\BadResponseException $exception) {
+            return response()->json([
+                'message' => "Unexpected error occurred",
+                'error' => $exception->getMessage()
+            ], $exception->getResponse()->getStatusCode());
+        }
+    }
 }
