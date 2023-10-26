@@ -42,8 +42,10 @@
                                                 placeholder="Password" required>
                                         </div>
                                         <div class="mb-3">
+                                            <!-- <div class="g-recaptcha"
+                                                data-sitekey="6Ld1tGUkAAAAAJG-5n1QOgORuL2JXJtcTdFEiPNp"></div> -->
                                             <div class="g-recaptcha"
-                                                data-sitekey="6Ld1tGUkAAAAAJG-5n1QOgORuL2JXJtcTdFEiPNp"></div>
+                                                data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
                                         </div>
                                         <div class="mb-3">
                                             <button type="submit" class="btn btn-primary btn-block">Sign Me
@@ -82,7 +84,7 @@
             },
             error: function(error) {
                 console.log(error);
-                if (error.status == 403 ) {
+                if (error.status == 403) {
                     window.location.href = "{{ route('auth.verify-device')}}";
                 } else {
                     alert(error.responseText);

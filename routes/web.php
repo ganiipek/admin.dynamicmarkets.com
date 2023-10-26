@@ -62,6 +62,8 @@ Route::group(['middleware' => ['accessToken']], function () {
         });
 
         Route::prefix('/users')->group(function () {
+            Route::post('/add', "App\Http\Controllers\UsersController@add");
+            Route::put('/update', "App\Http\Controllers\UsersController@update");
             Route::get('/get_by_date', "App\Http\Controllers\UsersController@getAllByDate");
             Route::post('/client/bind', "App\Http\Controllers\UsersController@bindClient");
             Route::post('/client/unbind', "App\Http\Controllers\UsersController@unbindClient");
@@ -74,6 +76,10 @@ Route::group(['middleware' => ['accessToken']], function () {
                 Route::get('list', 'App\Http\Controllers\MetatraderController@getClients');
                 Route::post('add', 'App\Http\Controllers\MetatraderController@addClient');
             });
+
+            Route::prefix('/trading_accounts')->group(function () {
+                Route::post('add', 'App\Http\Controllers\MetatraderController@addTradingAccount');
+            });
         });
 
         Route::prefix('/admins')->group(function () {
@@ -82,6 +88,8 @@ Route::group(['middleware' => ['accessToken']], function () {
 
             Route::prefix('/settings')->group(function () {
                 Route::post('/trading_account_default_group', "App\Http\Controllers\MetatraderController@setTradingAccountsDefaultGroup");
+                Route::get('/user-trading-accounts-limit', "App\Http\Controllers\SettingsController@getUserTradingAccountsLimit");
+                Route::post('/user-trading-accounts-limit', "App\Http\Controllers\SettingsController@setUserTradingAccountsLimit");
             });
         });
 
@@ -89,17 +97,24 @@ Route::group(['middleware' => ['accessToken']], function () {
             Route::post('/update', "App\Http\Controllers\WithdrawalsController@setWithdrawalById");
         });
 
+        Route::prefix('/settings')->group(function () {
+            Route::post('/mt5-custom-trading-account-id', "App\Http\Controllers\SettingsController@setMT5CustomTradingAccountId");
+        });
+
         
     });
 
 
     Route::prefix('/customers')->group(function () {
+        Route::get('/create', function () {
+            return view('customers.create');
+        })->name('customers.create');
+        
         Route::prefix('/metatrader')->group(function () {
             Route::get('list', 'App\Http\Controllers\ClientsController@initMetatraderListPage')->name('customers.metatrader.clients.list');
             
             Route::prefix('/clients')->group(function () {
                 Route::get('add', 'App\Http\Controllers\MetatraderController@initAddClientPage')->name('customers.metatrader.clients.add');
-                
             });
         });
     });

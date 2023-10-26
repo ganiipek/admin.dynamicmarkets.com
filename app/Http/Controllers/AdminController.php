@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use App\Http\Controllers\WebRequestController;
 use App\Http\Controllers\MetatraderController;
+use App\Http\Controllers\SettingsController;
 
 class AdminController extends Controller
 {
@@ -16,6 +17,7 @@ class AdminController extends Controller
         $this->BASE_URL = env("API_SERVER_BASE_URL");
         $this->ReqController = new WebRequestController();
         $this->MetatraderController = new MetatraderController();
+        $this->SettingsController = new SettingsController();
     }
 
     public function initAdminListPage(Request $request)
@@ -57,7 +59,9 @@ class AdminController extends Controller
 
         return view("admins.settings",[
             "metatrader_groups" => $groups,
-            "trading_account_default_group" => $this->MetatraderController->getTradingAccountsDefaultGroup()->getData()->group
+            "trading_account_default_group" => $this->MetatraderController->getTradingAccountsDefaultGroup()->getData()->group,
+            "mt5_custom_trading_account_id" => $this->SettingsController->getMT5CustomTradingAccountId(),
+            "user_trading_accounts_limit" => $this->SettingsController->getUserTradingAccountsLimit()
         ]);
     }
 

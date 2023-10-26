@@ -124,6 +124,43 @@ class WebRequestController extends Controller
         }
     }
 
+    function _put($url, $data = null, $access_token = null, $refresh_token = null)
+    {
+        $client = $this->getAuthClient($access_token, $refresh_token);
+        return $client->put($url, [
+            'form_params' => $data
+        ]);
+    }
+
+    public function put($url, $data = null, $access_token = null, $refresh_token = null)
+    {
+        try {
+            return $this->_put($url, $data, $access_token, $refresh_token);
+        } catch (\GuzzleHttp\Exception\BadResponseException $e) {
+            if ($e->getCode() == 401) {
+                $res = $this->getClient()->put($this->BASE_URL . 'auth/admin/accesstoken/refresh', [
+                    'json' => [
+                        'refreshToken' => request()->cookie('refresh_token'),
+                        'fingerprint' => session()->get('fingerprint'),
+                        'admin-id' => session()->get("user")["id"],
+                        'admin-mail' => session()->get("user")["email"],
+                    ]
+                ]);
+                $json = json_decode($res->getBody());
+                $access_token = $json->accessToken;
+                $refresh_token = $json->refreshToken;
+                // $expires_in = $json->expiresIn;
+                // $expires_at = Carbon::now()->addSeconds($expires_in);
+                Cookie::queue('access_token', $json->accessToken, 5, null, null, true, true);
+                Cookie::queue('refresh_token', $json->refreshToken, 24*60, null, null, true, true);
+                
+                return $this->_put($url, $data, $access_token, $refresh_token);
+            } else {
+                throw $e;
+            }
+        }
+    }
+
     function _delete($url, $data = null, $access_token = null, $refresh_token = null)
     {
         $client = $this->getAuthClient($access_token, $refresh_token);
