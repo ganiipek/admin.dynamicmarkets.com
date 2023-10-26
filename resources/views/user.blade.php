@@ -750,7 +750,7 @@
                     },
                     success: function(response) {
                         console.log(response)
-                        toastr.success("Customer edited successfully");
+                        toastr.success("New client successfully added!");
                         location.reload();
                     },
                     error: function(error) {
