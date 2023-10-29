@@ -67,6 +67,7 @@ Route::group(['middleware' => ['accessToken']], function () {
             Route::get('/get_by_date', "App\Http\Controllers\UsersController@getAllByDate");
             Route::post('/client/bind', "App\Http\Controllers\UsersController@bindClient");
             Route::post('/client/unbind', "App\Http\Controllers\UsersController@unbindClient");
+            Route::post('/verification', "App\Http\Controllers\UsersController@changeVerification");
         });
 
         Route::prefix('/metatrader')->group(function () {

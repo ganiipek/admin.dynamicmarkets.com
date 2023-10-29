@@ -95,6 +95,10 @@
                                                     data-target="#createClientModal">Create Client</button>
                                             </div>
                                             @endif
+                                            <div class="mb-3">
+                                                <button type="button" class="btn btn-success" data-toggle="modal"
+                                                    data-target="#changeVerificationModal">Change Verification</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -405,14 +409,17 @@
                                         <label class="form-label">Gender</label>
                                         <select id="input_gender" name="input_gender"
                                             class="default-select form-control wide">
-                                            <option id="Male" {{ $user->gender == "Male" ? "selected":"" }}>Male</option>
-                                            <option id="Female" {{ $user->gender == "Female" ? "selected":"" }}>Female</option>
+                                            <option id="Male" {{ $user->gender == "Male" ? "selected":"" }}>Male
+                                            </option>
+                                            <option id="Female" {{ $user->gender == "Female" ? "selected":"" }}>Female
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <label class="form-label">Birthdate</label>
                                         <input type="text" class="form-control" placeholder="2017-06-04"
-                                            id="input_birthdate" name="input_birthdate" value="{{ \Carbon\Carbon::parse($user->birthdate)->format('Y-m-d') }}">
+                                            id="input_birthdate" name="input_birthdate"
+                                            value="{{ \Carbon\Carbon::parse($user->birthdate)->format('Y-m-d') }}">
                                     </div>
                                     <div class="mb-3 col-md-4">
                                         <label class="form-label">First Name</label>
@@ -431,13 +438,13 @@
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <label class="form-label">E-Mail</label>
-                                        <input name="input_email" type="email" class="form-control"
-                                            placeholder="E-Mail" value="{{ $user->email }}" disabled>
+                                        <input name="input_email" type="email" class="form-control" placeholder="E-Mail"
+                                            value="{{ $user->email }}" disabled>
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <label class="form-label">Phone</label>
-                                        <input name="input_phone" type="text" class="form-control" 
-                                            placeholder="Phone" value="{{ $user->phone }}">
+                                        <input name="input_phone" type="text" class="form-control" placeholder="Phone"
+                                            value="{{ $user->phone }}">
                                     </div>
                                     <div class="mb-3 col-md-9">
                                         <label class="form-label">Address</label>
@@ -446,8 +453,8 @@
                                     </div>
                                     <div class="mb-3 col-md-3">
                                         <label class="form-label">Zip</label>
-                                        <input name="input_zip" type="text" class="form-control" 
-                                            placeholder="Zip Code" value="{{ $user->postal_code }}">
+                                        <input name="input_zip" type="text" class="form-control" placeholder="Zip Code"
+                                            value="{{ $user->postal_code }}">
                                     </div>
                                     <div class="mb-3 col-md-4">
                                         <label class="form-label">Country</label>
@@ -462,7 +469,7 @@
                                     <div class="mb-3 col-md-4">
                                         <label class="form-label">State</label>
                                         <input name="input_state" type="text" class="form-control" placeholder="State"
-                                        value="{{ $user->state }}">
+                                            value="{{ $user->state }}">
                                     </div>
                                 </div>
                             </div>
@@ -546,14 +553,17 @@
                                         <label class="form-label">Gender</label>
                                         <select id="input_gender" name="input_gender"
                                             class="default-select form-control wide">
-                                            <option id="Male" {{ $user->gender == "Male" ? "selected":"" }}>Male</option>
-                                            <option id="Female" {{ $user->gender == "Female" ? "selected":"" }}>Female</option>
+                                            <option id="Male" {{ $user->gender == "Male" ? "selected":"" }}>Male
+                                            </option>
+                                            <option id="Female" {{ $user->gender == "Female" ? "selected":"" }}>Female
+                                            </option>
                                         </select>
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <label class="form-label">Birthdate</label>
                                         <input type="text" class="form-control" placeholder="2017-06-04"
-                                            id="input_birthdate" name="input_birthdate" value="{{ \Carbon\Carbon::parse($user->birthdate)->format('Y-m-d') }}">
+                                            id="input_birthdate" name="input_birthdate"
+                                            value="{{ \Carbon\Carbon::parse($user->birthdate)->format('Y-m-d') }}">
                                     </div>
                                     <div class="mb-3 col-md-4">
                                         <label class="form-label">First Name</label>
@@ -572,13 +582,13 @@
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <label class="form-label">E-Mail</label>
-                                        <input name="input_email" type="email" class="form-control"
-                                            placeholder="E-Mail" value="{{ $user->email }}" disabled>
+                                        <input name="input_email" type="email" class="form-control" placeholder="E-Mail"
+                                            value="{{ $user->email }}" disabled>
                                     </div>
                                     <div class="mb-3 col-md-6">
                                         <label class="form-label">Phone</label>
-                                        <input name="input_phone" type="text" class="form-control" 
-                                            placeholder="Phone" value="{{ $user->phone }}">
+                                        <input name="input_phone" type="text" class="form-control" placeholder="Phone"
+                                            value="{{ $user->phone }}">
                                     </div>
                                     <div class="mb-3 col-md-9">
                                         <label class="form-label">Address</label>
@@ -587,8 +597,8 @@
                                     </div>
                                     <div class="mb-3 col-md-3">
                                         <label class="form-label">Zip</label>
-                                        <input name="input_zip" type="text" class="form-control" 
-                                            placeholder="Zip Code" value="{{ $user->postal_code }}">
+                                        <input name="input_zip" type="text" class="form-control" placeholder="Zip Code"
+                                            value="{{ $user->postal_code }}">
                                     </div>
                                     <div class="mb-3 col-md-4">
                                         <label class="form-label">Country</label>
@@ -603,7 +613,7 @@
                                     <div class="mb-3 col-md-4">
                                         <label class="form-label">State</label>
                                         <input name="input_state" type="text" class="form-control" placeholder="State"
-                                        value="{{ $user->state }}">
+                                            value="{{ $user->state }}">
                                     </div>
                                 </div>
                             </div>
@@ -617,6 +627,41 @@
             </div>
         </div>
 
+        <!-- Change Verification Modal -->
+        <div class="modal fade" id="changeVerificationModal" tabindex="-1" role="dialog"
+            aria-labelledby="changeVerificationModalTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Change Verification</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="basic-form">
+                            <form>
+                                <div class="col-xl-4 col-xxl-6 col-6">
+                                    <div class="form-check custom-checkbox mb-3">
+                                        <input type="checkbox" class="form-check-input" id="checkBoxEmail" {{ $user->email_verified ? "checked":"" }} required>
+                                        <label class="form-check-label" for="checkBox1">E-Mail</label>
+                                    </div>
+                                </div>
+                                <div class="col-xl-4 col-xxl-6 col-6">
+                                    <div class="form-check custom-checkbox mb-3 checkbox-success">
+                                        <input type="checkbox" class="form-check-input" id="checkBoxSumsub" {{ $user->user_sumsub->review_status == "completed" && $user->user_sumsub->review_result==1 ? "checked":"" }}
+                                            required>
+                                        <label class="form-check-label" for="checkBoxSumsub">Sumsub</label>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger light" data-dismiss="modal">Close</button>
+                        <button id="changeVerificationButton" type="button" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
         <script>
         $(function() {
             $('body').on('click', 'button[id=addTradingAccountButton]', function(e) {
@@ -855,6 +900,34 @@
                 });
             }
         });
+
+        $('body').on('click', 'button[id=changeVerificationButton]', function(e) {
+            $("#changeVerificationButton").prop("disabled", true);
+
+            var checkBoxEmail = $('#checkBoxEmail').is(":checked");
+            var checkBoxSumsub = $('#checkBoxSumsub').is(":checked");
+
+            $.ajax({
+                type: "post",
+                url: '{{ action("App\\Http\\Controllers\\UsersController@changeVerification") }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    user_id: '{{ $user->id }}',
+                    email: checkBoxEmail,
+                    sumsub: checkBoxSumsub
+                },
+                success: function(response) {
+                    toastr.success(response.message);
+                    $('#changeVerificationModal').modal('hide');
+                    location.reload();
+                },
+                error: function($error) {
+                    toastr.error($error.responseText)
+                    console.log($error)
+                    $("#changeVerificationButton").prop("disabled", false);
+                }
+            });
+        })
         </script>
 
     </x-slot>

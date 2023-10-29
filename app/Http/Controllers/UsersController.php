@@ -146,4 +146,13 @@ class UsersController extends Controller
         ];
         return response()->json($datas)->getData();
     }
+
+    public function changeVerification(Request $request)
+    {
+        $res = $this->ReqController->post($this->BASE_URL . "users/verification", [
+            'user_id' => $request->get('user_id'),
+            'email' => $request->get('email'),
+            'sumsub' => $request->get('sumsub')
+        ]);
+    }
 }
