@@ -45,7 +45,7 @@
                                             <!-- <div class="g-recaptcha"
                                                 data-sitekey="6Ld1tGUkAAAAAJG-5n1QOgORuL2JXJtcTdFEiPNp"></div> -->
                                             <div class="g-recaptcha"
-                                                data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"></div>
+                                                data-sitekey="{{ $recaptcha_site_key }}"></div>
                                         </div>
                                         <div class="mb-3">
                                             <button type="submit" class="btn btn-primary btn-block">Sign Me

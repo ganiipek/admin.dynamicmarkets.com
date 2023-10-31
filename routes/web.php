@@ -39,7 +39,12 @@ Route::get('/503', function () {
 
 
 Route::get('/login', function () {
-    return view('auth.login');
+    $recaptcha_site_key_local = '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
+    $recaptcha_site_key_production = '6Ld1tGUkAAAAAJG-5n1QOgORuL2JXJtcTdFEiPNp';
+    
+    $recaptcha_site_key = env('APP_ENV') == 'production' ? $recaptcha_site_key_production : $recaptcha_site_key_local;
+
+    return view('auth.login', compact('recaptcha_site_key'));
 })->name('auth.login');
 
 Route::get('logout', 'App\Http\Controllers\AuthController@logout')->name('logout');
