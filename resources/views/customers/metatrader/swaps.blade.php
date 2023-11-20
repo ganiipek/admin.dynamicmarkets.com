@@ -108,6 +108,8 @@
 
                 $("#btnUpload").prop("disabled", false);
             };
+            
+            $("#btnUpload").prop("disabled", false);
         });
 
         $('body').on('click', 'button[id=btnSave]', function(e) {
@@ -154,6 +156,7 @@
                     success: function(response) {
                         toastr.success('Updated successfully');
                         $("#btnSave").prop("disabled", false);
+                        location.reload();
                     },
                     error: function($error) {
                         console.log($error.responseText)
