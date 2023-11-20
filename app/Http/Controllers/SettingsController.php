@@ -13,6 +13,13 @@ class SettingsController extends Controller
         $this->ReqController = new WebRequestController();
     }
 
+    public function getAllSettings()
+    {
+        $res = $this->ReqController->get($this->BASE_URL . "settings/all");
+        $json = json_decode($res->getBody());
+        return $json;
+    }
+
     public function getMT5CustomTradingAccountId()
     {
         $res = $this->ReqController->get($this->BASE_URL . "settings/mt5-custom-trading-account-id");
@@ -45,4 +52,38 @@ class SettingsController extends Controller
         $json = json_decode($res->getBody());
         return $json;
     }
+
+    public function getSumsubWebsiteLevel()
+    {
+        $res = $this->ReqController->get($this->BASE_URL . "settings/sumsub-website-level");
+        $json = json_decode($res->getBody());
+        return $json;
+    }
+
+    public function setSumsubWebsiteLevel(Request $request)
+    {
+        $res = $this->ReqController->post($this->BASE_URL . "settings/sumsub-website-level", [
+            'value' => $request->get('value')
+        ]);
+        $json = json_decode($res->getBody());
+        return $json;
+    }
+
+    public function getSumsubManuelLevel()
+    {
+        $res = $this->ReqController->get($this->BASE_URL . "settings/sumsub-manuel-level");
+        $json = json_decode($res->getBody());
+        return $json;
+    }
+
+    public function setSumsubManuelLevel(Request $request)
+    {
+        $res = $this->ReqController->post($this->BASE_URL . "settings/sumsub-manuel-level", [
+            'value' => $request->get('value')
+        ]);
+        $json = json_decode($res->getBody());
+        return $json;
+    }
+
+
 }
