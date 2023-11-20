@@ -56,9 +56,13 @@ class ClientsController extends Controller
     public function getKYCStatus(string $reviewStatus, int $review_result)
     {
         if ($review_result == 1 && $reviewStatus == "completed") {
-            return "Verified";
+            return "verified";
+        } else if ($reviewStatus == "init") {
+            return "document_waiting";
+        } else if ($reviewStatus == "pending") {
+            return "admin_review";
         } else {
-            return "Rejected";
+            return "rejected";
         }
     }
 
