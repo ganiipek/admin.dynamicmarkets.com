@@ -18,7 +18,7 @@
                                                     <select id="tradingAccountDefaultGroupSelect" class="form-control">
                                                         <option value="*" selected>All Group</option>
                                                         @foreach($metatrader_groups as $group)
-                                                        @if ($group == $trading_account_default_group)
+                                                        @if ($group == $settings->MT5_DEFAULT_GROUP->value)
                                                         <option value="{!! $group !!}" selected>{!! $group !!}</option>
                                                         @else
                                                         <option value="{!! $group !!}">{!! $group !!}</option>
@@ -35,13 +35,15 @@
                                             <div class="row">
                                                 <label>Custom Trading Account ID</label>
                                                 <div class="col-6">
-                                                    <input id="mt5CustomTradingAccountIdInput" type="text" class="form-control input-default " placeholder="input-default"
-                                                        value="{!! $mt5_custom_trading_account_id->value !!}">
+                                                    <input id="mt5CustomTradingAccountIdInput" type="text"
+                                                        class="form-control input-default " placeholder="input-default"
+                                                        value="{!! $settings->MT5_CUSTOM_TRADING_ACCOUNT_ID->value !!}">
                                                 </div>
                                                 <div class="col-3">
                                                     <label class="form-check-label">
-                                                        <input id="mt5CustomTradingAccountIdCheckbox" type="checkbox" class="form-check-input" value=""
-                                                            {{ $mt5_custom_trading_account_id->active ? "checked":"" }}>Active
+                                                        <input id="mt5CustomTradingAccountIdCheckbox" type="checkbox"
+                                                            class="form-check-input" value=""
+                                                            {{ $settings->MT5_CUSTOM_TRADING_ACCOUNT_ID_ACTIVE->value ? "checked":"" }}>Active
                                                     </label>
                                                 </div>
                                                 <div class="col-3">
@@ -53,11 +55,49 @@
                                             <div class="row">
                                                 <label>User Trading Account Limit</label>
                                                 <div class="col-9">
-                                                    <input id="userTradingAccountsLimitInput" type="text" class="form-control input-default " placeholder="input-default"
-                                                        value="{!! $user_trading_accounts_limit->value !!}">
+                                                    <input id="userTradingAccountsLimitInput" type="text"
+                                                        class="form-control input-default " placeholder="input-default"
+                                                        value="{!! $settings->USER_TRADING_ACCOUNTS_LIMIT->value !!}">
                                                 </div>
                                                 <div class="col-3">
                                                     <button id="userTradingAccountsLimitButton" type="button"
+                                                        class="btn btn-success">Save</button>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Sumsub Settings</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="basic-form">
+                                            <div class="row">
+                                                <label>Sumsub Website Level</label>
+                                                <div class="col-9">
+                                                    <input id="sumsubWebsiteLevelInput" type="text"
+                                                        class="form-control input-default " placeholder="input-default"
+                                                        value="{!! $settings->SUMSUB_WEBSITE_LEVEL->value !!}">
+                                                </div>
+                                                <div class="col-3">
+                                                    <button id="sumsubWebsiteLevelButton" type="button"
+                                                        class="btn btn-success">Save</button>
+                                                </div>
+                                            </div>
+                                            <hr>
+                                            <div class="row">
+                                                <label>Sumsub Manuel Level (For users added from admin)</label>
+                                                <div class="col-9">
+                                                    <input id="sumsubManuelLevelInput" type="text"
+                                                        class="form-control input-default " placeholder="input-default"
+                                                        value="{!! $settings->SUMSUB_MANUEL_LEVEL->value !!}">
+                                                </div>
+                                                <div class="col-3">
+                                                    <button id="sumsubManuelLevelButton" type="button"
                                                         class="btn btn-success">Save</button>
                                                 </div>
                                             </div>
@@ -96,12 +136,13 @@
                         $("#tradingAccountDefaultGroupButton").prop("disabled", false);
                     },
                     error: function(error) {
+                        console.log(error)
                         toastr.error(error.responseJSON.error, 'Error')
                         $("#tradingAccountDefaultGroupButton").prop("disabled", false);
                     }
                 });
             })
-            
+
             $('body').on('click', 'button[id=mt5CustomTradingAccountIdButton]', function(e) {
                 $("#mt5CustomTradingAccountIdButton").prop("disabled", true);
 
@@ -127,12 +168,13 @@
                         $("#mt5CustomTradingAccountIdButton").prop("disabled", false);
                     },
                     error: function(error) {
+                        console.log(error)
                         toastr.error(error.responseJSON.error, 'Error')
                         $("#mt5CustomTradingAccountIdButton").prop("disabled", false);
                     }
                 });
             })
-            
+
             $('body').on('click', 'button[id=userTradingAccountsLimitButton]', function(e) {
                 $("#userTradingAccountsLimitButton").prop("disabled", true);
 
@@ -156,8 +198,69 @@
                         $("#userTradingAccountsLimitButton").prop("disabled", false);
                     },
                     error: function(error) {
+                        console.log(error)
                         toastr.error(error.responseJSON.error, 'Error')
                         $("#userTradingAccountsLimitButton").prop("disabled", false);
+                    }
+                });
+            })
+
+            $('body').on('click', 'button[id=sumsubWebsiteLevelButton]', function(e) {
+                $("#sumsubWebsiteLevelButton").prop("disabled", true);
+
+                var value = $("#sumsubWebsiteLevelInput").val();
+
+                if (value == null || value == "") {
+                    toastr.error("Value should be not empty!", 'Error')
+                    $("#sumsubWebsiteLevelButton").prop("disabled", false);
+                    return;
+                }
+
+                $.ajax({
+                    type: "post",
+                    url: '{{ action("App\\Http\\Controllers\\SettingsController@setSumsubWebsiteLevel") }}',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        value: value
+                    },
+                    success: function(response) {
+                        toastr.success(response.message, 'Success')
+                        $("#sumsubWebsiteLevelButton").prop("disabled", false);
+                    },
+                    error: function(error) {
+                        console.log(error)
+                        toastr.error(error.responseJSON.error, 'Error')
+                        $("#sumsubWebsiteLevelButton").prop("disabled", false);
+                    }
+                });
+            })
+
+            $('body').on('click', 'button[id=sumsubManuelLevelButton]', function(e) {
+                $("#sumsubManuelLevelButton").prop("disabled", true);
+
+                var value = $("#sumsubManuelLevelInput").val();
+
+                if (value == null || value == "") {
+                    toastr.error("Value should be not empty!", 'Error')
+                    $("#sumsubManuelLevelButton").prop("disabled", false);
+                    return;
+                }
+
+                $.ajax({
+                    type: "post",
+                    url: '{{ action("App\\Http\\Controllers\\SettingsController@setSumsubManuelLevel") }}',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        value: value
+                    },
+                    success: function(response) {
+                        toastr.success(response.message, 'Success')
+                        $("#sumsubManuelLevelButton").prop("disabled", false);
+                    },
+                    error: function(error) {
+                        console.log(error)
+                        toastr.error(error.responseJSON.error, 'Error')
+                        $("#sumsubManuelLevelButton").prop("disabled", false);
                     }
                 });
             })

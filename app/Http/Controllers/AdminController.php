@@ -55,13 +55,16 @@ class AdminController extends Controller
 
     public function initSettingsPage(Request $request)
     {
+        // dd($this->SettingsController->getAllSettings());
         $groups = $this->MetatraderController->getGroups();
 
         return view("admins.settings",[
             "metatrader_groups" => $groups,
-            "trading_account_default_group" => $this->MetatraderController->getTradingAccountsDefaultGroup()->getData()->group,
-            "mt5_custom_trading_account_id" => $this->SettingsController->getMT5CustomTradingAccountId(),
-            "user_trading_accounts_limit" => $this->SettingsController->getUserTradingAccountsLimit()
+            "settings" => $this->SettingsController->getAllSettings()
+            // "trading_account_default_group" => $this->MetatraderController->getTradingAccountsDefaultGroup()->getData()->group,
+            // "mt5_custom_trading_account_id" => $this->SettingsController->getMT5CustomTradingAccountId(),
+            // "user_trading_accounts_limit" => $this->SettingsController->getUserTradingAccountsLimit(),
+            // "sumsub_website_level" => $this->SettingsController->getSumsubWebsiteLevel()
         ]);
     }
 
