@@ -9,6 +9,7 @@
                                 <h4 class="card-title">Update swaps from csv</h4>
                             </div>
                             <div class="card-body">
+                                <label>You can file example <strong><a style="color:blue" href="{{ asset('files/example_swap.csv') }}">here</a></strong></label>
                                 <div class="row">
                                     <div class="col-8">
                                         <input class="form-control" type="file" id="csvFile" accept=".csv">
