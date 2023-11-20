@@ -49,7 +49,7 @@ class  LoggerController extends Controller
 
             if (property_exists($user, "message") == false) {
                 $message = "";
-            } else if (is_array($user->message)) {
+            } else if (is_array($user->message) || is_object($user->message)) {
                 $message = json_encode($user->message);
             } else {
                 $message = $user->message ?? "";
