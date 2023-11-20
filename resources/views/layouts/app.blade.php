@@ -166,7 +166,7 @@
 								<ul aria-expanded="false">
 									<li><a href="{{ route('customers.metatrader.clients.list') }}">Bind/Unbind Client</a></li>
 									<li><a href="{{ route('customers.metatrader.clients.add') }}">Create New Client</a></li>
-									<!-- <li><a href="./email-inbox.html">Bind/Unbind Client</a></li> -->
+									<li><a href="{{ route('customers.metatrader.swaps') }}">Swaps</a></li>
 								</ul>
 							</li>
                         </ul>

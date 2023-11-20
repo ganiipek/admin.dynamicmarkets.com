@@ -86,6 +86,8 @@ Route::group(['middleware' => ['accessToken']], function () {
             Route::prefix('/trading_accounts')->group(function () {
                 Route::post('add', 'App\Http\Controllers\MetatraderController@addTradingAccount');
             });
+
+            Route::post('/swap', 'App\Http\Controllers\MetatraderController@setSwaps');
         });
 
         Route::prefix('/admins')->group(function () {
@@ -96,18 +98,16 @@ Route::group(['middleware' => ['accessToken']], function () {
                 Route::post('/trading_account_default_group', "App\Http\Controllers\MetatraderController@setTradingAccountsDefaultGroup");
                 Route::get('/user-trading-accounts-limit', "App\Http\Controllers\SettingsController@getUserTradingAccountsLimit");
                 Route::post('/user-trading-accounts-limit', "App\Http\Controllers\SettingsController@setUserTradingAccountsLimit");
+                Route::post('/mt5-custom-trading-account-id', "App\Http\Controllers\SettingsController@setMT5CustomTradingAccountId");
+                Route::post('/sumsub-website-level', "App\Http\Controllers\SettingsController@setSumsubWebsiteLevel");
+                Route::post('/sumsub-manuel-level', "App\Http\Controllers\SettingsController@setSumsubManuelLevel");
+                
             });
         });
 
         Route::prefix('/withdrawals')->group(function () {
             Route::post('/update', "App\Http\Controllers\WithdrawalsController@setWithdrawalById");
         });
-
-        Route::prefix('/settings')->group(function () {
-            Route::post('/mt5-custom-trading-account-id', "App\Http\Controllers\SettingsController@setMT5CustomTradingAccountId");
-        });
-
-        
     });
 
 
@@ -122,6 +122,8 @@ Route::group(['middleware' => ['accessToken']], function () {
             Route::prefix('/clients')->group(function () {
                 Route::get('add', 'App\Http\Controllers\MetatraderController@initAddClientPage')->name('customers.metatrader.clients.add');
             });
+
+            Route::get('swaps', 'App\Http\Controllers\MetatraderController@initSwapsPage')->name('customers.metatrader.swaps');
         });
     });
 

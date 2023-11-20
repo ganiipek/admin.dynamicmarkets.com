@@ -26,6 +26,15 @@ class MetatraderController extends Controller
         ]);
     }
 
+    public function initSwapsPage(Request $request)
+    {
+        $swaps = $this->getSwaps();
+        
+        return view('customers.metatrader.swaps', [
+            'swaps' => $swaps
+        ]);
+    }
+
     public function getGroups()
     {
         try {
@@ -184,6 +193,40 @@ class MetatraderController extends Controller
             return response()->json([
                 'message' => "Unexpected error occurred",
                 'error' => $exception->getMessage()
+            ], $exception->getResponse()->getStatusCode());
+        }
+    }
+
+    public function getSwaps() 
+    {
+        try {
+            $res = $this->ReqController->get($this->BASE_URL . "metatraders/database/symbol/swaps");
+            $json = json_decode($res->getBody());
+            return $json->data;
+        } catch (\GuzzleHttp\Exception\BadResponseException $exception) {
+            return response()->json([
+                'message' => "Unexpected error occurred",
+                'error' => $exception->getMessage(),
+                'swaps' => []
+            ], $exception->getResponse()->getStatusCode());
+        }
+    }
+
+    public function setSwaps(Request $request)
+    {
+        try {
+            $res = $this->ReqController->post($this->BASE_URL . "metatraders/database/symbol/swaps", [
+                'swaps' => $request->get('data')
+            ]);
+            $json = json_decode($res->getBody());
+
+            return response()->json([
+                'message' => "The swaps have been set successfully."
+            ], 200);
+        } catch (\GuzzleHttp\Exception\BadResponseException $exception) {
+            return response()->json([
+                'message' => "Unexpected error occurred",
+                'error' => $exception->getResponse()->getBody()->getContents()
             ], $exception->getResponse()->getStatusCode());
         }
     }
