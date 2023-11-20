@@ -93,16 +93,15 @@ Route::group(['middleware' => ['accessToken']], function () {
         Route::prefix('/admins')->group(function () {
             Route::post('/add', 'App\Http\Controllers\AdminController@addAdmin');
             Route::delete('/delete', 'App\Http\Controllers\AdminController@deleteAdmin');
+        });
 
-            Route::prefix('/settings')->group(function () {
-                Route::post('/trading_account_default_group', "App\Http\Controllers\MetatraderController@setTradingAccountsDefaultGroup");
-                Route::get('/user-trading-accounts-limit', "App\Http\Controllers\SettingsController@getUserTradingAccountsLimit");
-                Route::post('/user-trading-accounts-limit', "App\Http\Controllers\SettingsController@setUserTradingAccountsLimit");
-                Route::post('/mt5-custom-trading-account-id', "App\Http\Controllers\SettingsController@setMT5CustomTradingAccountId");
-                Route::post('/sumsub-website-level', "App\Http\Controllers\SettingsController@setSumsubWebsiteLevel");
-                Route::post('/sumsub-manuel-level', "App\Http\Controllers\SettingsController@setSumsubManuelLevel");
-                
-            });
+        Route::prefix('/settings')->group(function () {
+            Route::post('/trading_account_default_group', "App\Http\Controllers\MetatraderController@setTradingAccountsDefaultGroup");
+            Route::get('/user-trading-accounts-limit', "App\Http\Controllers\SettingsController@getUserTradingAccountsLimit");
+            Route::post('/user-trading-accounts-limit', "App\Http\Controllers\SettingsController@setUserTradingAccountsLimit");
+            Route::post('/mt5-custom-trading-account-id', "App\Http\Controllers\SettingsController@setMT5CustomTradingAccountId");
+            Route::post('/sumsub-website-level', "App\Http\Controllers\SettingsController@setSumsubWebsiteLevel");
+            Route::post('/sumsub-manuel-level', "App\Http\Controllers\SettingsController@setSumsubManuelLevel");
         });
 
         Route::prefix('/withdrawals')->group(function () {
@@ -141,11 +140,17 @@ Route::group(['middleware' => ['accessToken']], function () {
 
         Route::get('/swaps', 'App\Http\Controllers\SwapsController@initSetSwapsPage')->name("admins.set_swaps");
 
-        Route::prefix('/logger')->group(function () {
-            Route::get('/http', 'App\Http\Controllers\LoggerController@initLoggerHTTPPage')->name("admins.logger.http");
-            Route::get('/service', 'App\Http\Controllers\LoggerController@initLoggerServicePage')->name("admins.logger.service");
-        });
         Route::get('/settings', 'App\Http\Controllers\AdminController@initSettingsPage')->name("admins.settings");
+    });
+
+    Route::prefix('/settings')->group(function () {
+        Route::get('/metatrader5', 'App\Http\Controllers\AdminController@initMetatrader5SettingsPage')->name("settings.metatrader5");
+        Route::get('/sumsub', 'App\Http\Controllers\AdminController@initSumsubSettingsPage')->name("settings.sumsub");
+    });
+
+    Route::prefix('/loggers')->group(function () {
+        Route::get('/http', 'App\Http\Controllers\LoggerController@initLoggerHTTPPage')->name("loggers.http");
+        Route::get('/service', 'App\Http\Controllers\LoggerController@initLoggerServicePage')->name("loggers.service");
     });
     
     Route::get('/', 'App\Http\Controllers\StatisticsController@initStatisticsPage')->name("index");

@@ -24,7 +24,7 @@
                                                             @endif
                                                         </h3>
                                                         <h5> ID: {{$user->id}}</h5>
-                                                        <h5> CLient ID: {{ $user->user_client->login ?? 0 }}</h5>
+                                                        <h5> Client ID: {{ $user->user_client->login ?? 0 }}</h5>
                                                         <span>
                                                             <svg width="16" height="21" viewBox="0 0 16 21" fill="none"
                                                                 xmlns="http://www.w3.org/2000/svg">

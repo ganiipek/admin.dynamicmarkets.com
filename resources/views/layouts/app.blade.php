@@ -26,23 +26,26 @@
     <link href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <link href="{{ asset('vendor/bootstrap-select/dist/css/bootstrap-select.min.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('vendor/jquery-nice-select/css/nice-select.css')}}">
-    <link href="{{ asset('vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">    <link href="{{ asset('vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}" rel="stylesheet">
-    
+    <link href="{{ asset('vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('vendor/bootstrap-material-datetimepicker/css/bootstrap-material-datetimepicker.css') }}"
+        rel="stylesheet">
+
     <link rel="stylesheet" href="{{ asset('vendor/toastr/css/toastr.min.css') }}">
     <!-- ----swiper-slider---- -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
 
     <!-- Style css -->
     <link href="{{ asset('https://fonts.googleapis.com/css2?family=Material+Icons')}}" rel="stylesheet">
     <!-- Style css -->
     <link href="{{ asset('css/style.css')}}" rel="stylesheet">
 
-    
+
     <script src="{{ asset('vendor/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('vendor/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('vendor/moment/moment.min.js') }}"></script>
     <script src="{{ asset('vendor/bootstrap/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('vendor/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}"></script>
+    <script src="{{ asset('vendor/bootstrap-material-datetimepicker/js/bootstrap-material-datetimepicker.js') }}">
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
 </head>
 
@@ -155,38 +158,67 @@
                     </li>
                     <li>
                         <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-                            <i class="material-icons-outlined">apps</i>
+                            <i class="material-symbols-outlined">person</i>
                             <span class="nav-text">Customers</span>
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="{{ route('customers.create') }}">Create New Customer</a></li>
-                            <li><a href="{{ route('customers') }}">List</a></li>
+                            <li><a href="{{ route('customers') }}">List List</a></li>
                             <li><a href="{{ route('withdrawal.requests') }}">Withdrawal Requests</a></li>
-                            <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Metatrader</a>
-								<ul aria-expanded="false">
-									<li><a href="{{ route('customers.metatrader.clients.list') }}">Bind/Unbind Client</a></li>
-									<li><a href="{{ route('customers.metatrader.clients.add') }}">Create New Client</a></li>
-									<li><a href="{{ route('customers.metatrader.swaps') }}">Swaps</a></li>
-								</ul>
-							</li>
+                            <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Metatrader5
+                                    Clients</a>
+                                <ul aria-expanded="false">
+                                    <li><a href="{{ route('customers.metatrader.clients.list') }}">Bind/Unbind
+                                            Client</a></li>
+                                    <li><a href="{{ route('customers.metatrader.clients.add') }}">Create New Client</a>
+                                    </li>
+
+                                </ul>
+                            </li>
                         </ul>
                     </li>
                     <li>
                         <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-                            <i class="material-icons-outlined">apps</i>
+                            <i class="material-symbols-outlined">apps</i>
+                            <span class="nav-text">Application</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('customers.metatrader.swaps') }}">Set Swaps</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                            <i class="material-symbols-outlined"> admin_panel_settings </i>
                             <span class="nav-text">Admin</span>
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="{{ route('admins.add') }}">New Admin</a></li>
                             <li><a href="{{ route('admins.list') }}">Admin List</a></li>
-                            <!-- <li><a href="{{ route('admins.set_swaps') }}">Set Swaps</a></li> -->
-                            <li><a href="{{ route('admins.logger.service') }}">Logger Service</a></li>
-                            <li><a href="{{ route('admins.logger.http') }}">Logger HTTP</a></li>
-                            <li><a href="{{ route('admins.settings') }}">Settings</a></li>
                         </ul>
                     </li>
                     <li>
-                        <a href="{{ route('logout') }}" aria-expanded="true" style="background-color: #f44336;color:white">
+                        <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                            <i class="material-symbols-outlined">tune</i>
+                            <span class="nav-text">Settings</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('settings.metatrader5') }}">Metatrader5 Settings</a></li>
+                            <li><a href="{{ route('settings.sumsub') }}">Sumsub Settings</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                            <i class="material-symbols-outlined">logo_dev</i>
+                            <span class="nav-text">Loggers</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('loggers.service') }}">Service Logger</a></li>
+                            <li><a href="{{ route('loggers.http') }}">HTTP Logger</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="{{ route('logout') }}" aria-expanded="true"
+                            style="background-color: #f44336;color:white">
                             <span class="nav-text">LOGOUT</span>
                         </a>
                     </li>
