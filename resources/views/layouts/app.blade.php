@@ -163,7 +163,7 @@
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="{{ route('customers.create') }}">Create New Customer</a></li>
-                            <li><a href="{{ route('customers') }}">List List</a></li>
+                            <li><a href="{{ route('customers') }}">Customers List</a></li>
                             <li><a href="{{ route('withdrawal.requests') }}">Withdrawal Requests</a></li>
                             <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Metatrader5
                                     Clients</a>
