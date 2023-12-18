@@ -85,6 +85,8 @@ Route::group(['middleware' => ['accessToken']], function () {
 
             Route::prefix('/trading_accounts')->group(function () {
                 Route::post('add', 'App\Http\Controllers\MetatraderController@addTradingAccount');
+                Route::get('rights', 'App\Http\Controllers\MetatraderController@getTradingAccountRights');
+                Route::post('rights', 'App\Http\Controllers\MetatraderController@setTradingAccountRights');
             });
 
             Route::post('/swap', 'App\Http\Controllers\MetatraderController@setSwaps');
