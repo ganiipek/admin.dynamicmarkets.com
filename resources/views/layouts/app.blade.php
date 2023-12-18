@@ -184,6 +184,7 @@
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="{{ route('customers.metatrader.swaps') }}">Set Swaps</a></li>
+                            <li><a href="{{ route('applications.crypto_transfer_check') }}">Crypto Transfer Check</a></li>
                         </ul>
                     </li>
                     <li>

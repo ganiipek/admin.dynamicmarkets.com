@@ -107,6 +107,10 @@ Route::group(['middleware' => ['accessToken']], function () {
         Route::prefix('/withdrawals')->group(function () {
             Route::post('/update', "App\Http\Controllers\WithdrawalsController@setWithdrawalById");
         });
+
+        Route::prefix('/sumsub')->group(function () {
+            Route::get('/crypto/check_standalone', 'App\Http\Controllers\SumsubController@checkCryptoStandaloneAnalysis');
+        });
     });
 
 
@@ -121,8 +125,14 @@ Route::group(['middleware' => ['accessToken']], function () {
             Route::prefix('/clients')->group(function () {
                 Route::get('add', 'App\Http\Controllers\MetatraderController@initAddClientPage')->name('customers.metatrader.clients.add');
             });
+        });
+            });
 
+    Route::prefix('/applications')->group(function () {
             Route::get('swaps', 'App\Http\Controllers\MetatraderController@initSwapsPage')->name('customers.metatrader.swaps');
+
+        Route::prefix('/crypto_transfer_check')->group(function () {
+            Route::get('/', 'App\Http\Controllers\SumsubController@initCryptoTransferCheckPage')->name('applications.crypto_transfer_check');
         });
     });
 
