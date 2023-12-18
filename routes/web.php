@@ -73,6 +73,7 @@ Route::group(['middleware' => ['accessToken']], function () {
             Route::post('/client/bind', "App\Http\Controllers\UsersController@bindClient");
             Route::post('/client/unbind', "App\Http\Controllers\UsersController@unbindClient");
             Route::post('/verification', "App\Http\Controllers\UsersController@changeVerification");
+            Route::get('/transactions', "App\Http\Controllers\UsersController@getTransfers");
         });
 
         Route::prefix('/metatrader')->group(function () {
@@ -128,10 +129,10 @@ Route::group(['middleware' => ['accessToken']], function () {
                 Route::get('add', 'App\Http\Controllers\MetatraderController@initAddClientPage')->name('customers.metatrader.clients.add');
             });
         });
-            });
+    });
 
     Route::prefix('/applications')->group(function () {
-            Route::get('swaps', 'App\Http\Controllers\MetatraderController@initSwapsPage')->name('customers.metatrader.swaps');
+        Route::get('swaps', 'App\Http\Controllers\MetatraderController@initSwapsPage')->name('customers.metatrader.swaps');
 
         Route::prefix('/crypto_transfer_check')->group(function () {
             Route::get('/', 'App\Http\Controllers\SumsubController@initCryptoTransferCheckPage')->name('applications.crypto_transfer_check');

@@ -152,7 +152,7 @@
                                 </div>
                                 <!-- ----/column-- -->
                             </div>
-                            <div class="col-xl-12 wow fadeInUp" data-wow-delay="0.3s">
+                            <div class="col-xl-12 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="card">
                                     <div class="card-header">
                                         <h4 class="card-title">Withdrawal Requests</h4>
@@ -274,7 +274,56 @@
                                 </div>
                                 <!-- ----/column-- -->
                             </div>
-                            <div class="col-xl-12 wow fadeInUp" data-wow-delay="0.3s">
+                            <div class="col-xl-12 wow fadeInUp" data-wow-delay="0.1s">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Transfers</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <!-- ----column-- -->
+                                        <div class="row">
+                                            <div class="mb-3 col-md-5">
+                                                <label class="form-label">Start Time</label>
+                                                <input type="text" class="form-control" placeholder="Start Time"
+                                                    id="input_transfers_start_time" name="input_transfers_start_time">
+                                            </div>
+                                            <div class="mb-3 col-md-5">
+                                                <label class="form-label">End Time</label>
+                                                <input type="text" class="form-control" placeholder="End Time"
+                                                    id="input_transfers_end_time" name="input_transfers_end_time">
+                                            </div>
+                                            <div class="mb-3 col-sm-2">
+                                                <label class="form-label">Search</label>
+                                                <button id="transfersTableButton" type="button"
+                                                    class="btn btn-primary form-control wide">Search</button>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row">
+                                            <div class="table-responsive  patient">
+                                                <table
+                                                    class="table-responsive-lg table display mb-4 dataTablesCard  text-black dataTable no-footer"
+                                                    id="transfersTable">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>From</th>
+                                                            <th>To</th>
+                                                            <th>Amount</th>
+                                                            <th>Time</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- ----/column-- -->
+                            </div>
+                            <div class="col-xl-12 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="card">
                                     <div class="card-header">
                                         <h4 class="card-title">Referenced List</h4>
@@ -728,7 +777,7 @@
                                     <div class="form-check custom-checkbox mb-3">
                                         <input type="checkbox" class="form-check-input" id="checkBoxEmail"
                                             {{ $user->email_verified ? "checked":"" }} required>
-                                        <label class="form-check-label" for="checkBox1">E-Mail</label>
+                                        <label class="form-check-label" for="checkBoxEmail">E-Mail</label>
                                     </div>
                                 </div>
                                 <div class="col-xl-4 col-xxl-6 col-6">
@@ -750,44 +799,58 @@
             </div>
         </div>
         <script>
-        $(function() {
-            $('body').on('click', 'button[id=addTradingAccountButton]', function(e) {
-                $("#addTradingAccountButton").prop("disabled", true);
+        $('#input_transfers_start_time').bootstrapMaterialDatePicker({
+            weekStart: 0,
+            time: false
+        });
 
-                var input_leverage = $('#input_leverage').val();
-                var input_group = $('#input_group').val();
+        $('#input_transfers_end_time').bootstrapMaterialDatePicker({
+            weekStart: 0,
+            time: false
+        });
 
-                $.ajax({
-                    type: "post",
-                    url: '{{ action("App\\Http\\Controllers\\MetatraderController@addTradingAccount") }}',
-                    data: {
-                        _token: '{{ csrf_token() }}',
-                        user_id: '{{ $user->id }}',
-                        name: '{{ $user->name }}',
-                        middlename: '{{ $user->middlename }}',
-                        lastname: '{{ $user->lastname }}',
-                        email: '{{ $user->email }}',
-                        phone: '{{ $user->phone }}',
-                        country: '{{ $user->country }}',
-                        city: '{{ $user->city }}',
-                        address: '{{ $user->address }}',
-                        zip: '{{ $user->postal_code }}',
-                        state: '{{ $user->state }}',
-                        group: input_group,
-                        leverage: input_leverage
-                    },
-                    success: function(response) {
-                        toastr.success(response.message);
-                        $('#addTradingAccountModal').modal('hide');
-                        location.reload();
-                    },
-                    error: function($error) {
-                        toastr.error($error.responseText)
-                        console.log($error)
-                        $("#addTradingAccountButton").prop("disabled", false);
-                    }
-                });
-            })
+        $('input[name="input_birthdate"]').bootstrapMaterialDatePicker({
+            weekStart: 0,
+            time: false
+        });
+
+        $('body').on('click', 'button[id=addTradingAccountButton]', function(e) {
+            $("#addTradingAccountButton").prop("disabled", true);
+
+            var input_leverage = $('#input_leverage').val();
+            var input_group = $('#input_group').val();
+
+            $.ajax({
+                type: "post",
+                url: '{{ action("App\\Http\\Controllers\\MetatraderController@addTradingAccount") }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    user_id: '{{ $user->id }}',
+                    name: '{{ $user->name }}',
+                    middlename: '{{ $user->middlename }}',
+                    lastname: '{{ $user->lastname }}',
+                    email: '{{ $user->email }}',
+                    phone: '{{ $user->phone }}',
+                    country: '{{ $user->country }}',
+                    city: '{{ $user->city }}',
+                    address: '{{ $user->address }}',
+                    zip: '{{ $user->postal_code }}',
+                    state: '{{ $user->state }}',
+                    group: input_group,
+                    leverage: input_leverage
+                },
+                success: function(response) {
+                    toastr.success(response.message);
+                    $('#addTradingAccountModal').modal('hide');
+                    location.reload();
+                },
+                error: function($error) {
+                    toastr.error($error.responseText)
+                    console.log($error)
+                    $("#addTradingAccountButton").prop("disabled", false);
+                }
+            });
+        })
 
         $('body').on('click', 'button[id=editTradingAccountModalShowButton]', function(e) {
             $("#editTradingAccountButton").prop("disabled", true);
@@ -1099,6 +1162,54 @@
                     toastr.error($error.responseText)
                     console.log($error)
                     $("#changeVerificationButton").prop("disabled", false);
+                }
+            });
+        })
+
+        $('body').on('click', 'button[id=transfersTableButton]', function(e) {
+            $("#transfersTableButton").prop("disabled", true);
+
+            const input_start_time = $('#input_transfers_start_time').val();
+            const input_end_time = $('#input_transfers_end_time').val();
+
+            if (input_start_time == "" || input_end_time == "") {
+                toastr.error("Please select start time and end time")
+                $("#transfersTableButton").prop("disabled", false);
+                return;
+            }
+
+            const addRow = (data) => {
+                const table = $('#transfersTable').DataTable();
+                table.row.add([
+                    data.id,
+                    '[' + data.from_account_type.slug + '] ' + data.from_account_id,
+                    '[' + data.to_account_type.slug + '] ' + data.to_account_id,
+                    data.amount,
+                    data.created_at,
+                    data.transfer_status.name
+                ]).draw();
+            }
+
+            $.ajax({
+                type: "get",
+                url: '{{ action("App\\Http\\Controllers\\UsersController@getTransfers") }}',
+                data: {
+                    _token: '{{ csrf_token() }}',
+                    user_id: '{{ $user->id }}',
+                    start_time: input_start_time,
+                    end_time: input_end_time
+                },
+                success: function(response) {
+                    $('#transfersTable').DataTable().clear().draw();
+                    response.transfers.forEach(element => {
+                        addRow(element)
+                    });
+                    $("#transfersTableButton").prop("disabled", false);
+                },
+                error: function($error) {
+                    toastr.error($error.responseText)
+                    console.log($error)
+                    $("#transfersTableButton").prop("disabled", false);
                 }
             });
         })
