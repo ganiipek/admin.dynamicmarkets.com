@@ -23,11 +23,22 @@ class AdminController extends Controller
     public function initAdminListPage(Request $request)
     {
         $admins = $this->getAll($request);
-        // dd($admins);
-        $data = [
-            "admins" => $admins
+        
+        $show_buttons = [
+            "delete_admin" => false
         ];
 
+        foreach (session()->get('user')['role']['role_permissions'] as $role_permission) {
+            if ($role_permission['permission']['slug'] == 'ADMIN' && $role_permission['write']) {
+                $show_buttons['delete_admin'] = true;
+            }
+        }
+
+        $data = [
+            "admins" => $admins,
+            "show_buttons" => $show_buttons
+        ];
+        
         return view("admins.list", $data);
     }
 
@@ -55,23 +66,74 @@ class AdminController extends Controller
 
     public function initMetatrader5SettingsPage(Request $request)
     {
-        // dd($this->SettingsController->getAllSettings());
         $groups = $this->MetatraderController->getGroups();
+
+        $show_buttons = [
+            "save" => false
+        ];
+
+        foreach (session()->get('user')['role']['role_permissions'] as $role_permission) {
+            if ($role_permission['permission']['slug'] == 'SETTINGS_METATRADER5' && $role_permission['write']) {
+                $show_buttons['save'] = true;
+            }
+        }
 
         return view("settings.metatrader5",[
             "metatrader_groups" => $groups,
-            "settings" => $this->SettingsController->getAllSettings()
+            "settings" => $this->SettingsController->getAllSettings(),
+            "show_buttons" => $show_buttons
         ]);
     }
 
     public function initSumsubSettingsPage(Request $request)
     {
-        // dd($this->SettingsController->getAllSettings());
-        $groups = $this->MetatraderController->getGroups();
+        $show_buttons = [
+            "save" => false
+        ];
+
+        foreach (session()->get('user')['role']['role_permissions'] as $role_permission) {
+            if ($role_permission['permission']['slug'] == 'SETTINGS_SUMSUB' && $role_permission['write']) {
+                $show_buttons['save'] = true;
+            }
+        }
 
         return view("settings.sumsub",[
-            "settings" => $this->SettingsController->getAllSettings()
+            "settings" => $this->SettingsController->getAllSettings(),
+            "show_buttons" => $show_buttons
         ]);
+    }
+
+    public function initRolePermissionPage(Request $request)
+    {
+        $permissions = $this->getPermissions();
+        $roles = $this->getRolePermissions();
+
+        $show_cards = [
+            "update_role_permission" => false
+        ];
+
+        $show_buttons = [
+            "update_role" => false,
+            "delete_role" => false
+        ];
+
+        foreach (session()->get('user')['role']['role_permissions'] as $role_permission) {
+            if ($role_permission['permission']['slug'] == 'ADMIN' && $role_permission['write']) {
+                $show_cards['update_role_permission'] = true;
+
+                $show_buttons['update_role'] = true;
+                $show_buttons['delete_role'] = true;
+            }
+        }
+        
+        $data = [
+            "permissions" => $permissions,
+            "roles" => $roles,
+            "show_cards" => $show_cards,
+            "show_buttons" => $show_buttons
+        ];
+
+        return view("admins.role_permissions", $data);
     }
 
     public function getById($id)
@@ -111,6 +173,70 @@ class AdminController extends Controller
         $json = json_decode($res->getBody());
 
         return $json;
+    }
+
+    public function addRole(Request $request)
+    {
+        $data = [
+            'name' => $request->get('name'),
+            'description' => $request->get('description'),
+            'permissions' => $request->get('permissions') ?? '[]'
+        ];
+
+        $res = $this->ReqController->post($this->BASE_URL . "admins/roles", $data);
+        $json = json_decode($res->getBody());
+
+        return response()->json([
+            'message' => "The role has been added successfully.",
+            'data' => $json
+        ], 200);
+    }
+
+    public function deleteRole(Request $request)
+    {
+        $data = [
+            'role_id' => $request->get('role_id')
+        ];
+
+        $res = $this->ReqController->delete($this->BASE_URL . "admins/roles/", $data);
+        $json = json_decode($res->getBody());
+
+        return response()->json([
+            'message' => "The role has been deleted successfully.",
+            'data' => $json
+        ], 200);
+    }
+
+    public function getPermissions()
+    {
+        $res = $this->ReqController->get($this->BASE_URL . "admins/permissions");
+        $json = json_decode($res->getBody());
+
+        return $json;
+    }
+
+    public function getRolePermissions()
+    {
+        $res = $this->ReqController->get($this->BASE_URL . "admins/role-permissions");
+        $json = json_decode($res->getBody());
+
+        return $json;
+    }
+
+    public function updateRolePermissions(Request $request)
+    {
+        $data = [
+            'role_id' => $request->get('role_id'),
+            'permissions' => $request->get('permissions') ?? '[]'
+        ];
+
+        $res = $this->ReqController->post($this->BASE_URL . "admins/role-permissions/update", $data);
+        $json = json_decode($res->getBody());
+
+        return response()->json([
+            'message' => "The role has been updated successfully.",
+            'data' => $json
+        ], 200);
     }
 
     public function addAdmin(Request $request)

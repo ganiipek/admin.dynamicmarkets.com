@@ -80,31 +80,40 @@
                                     </div> -->
                                     <div class="card-body">
                                         <div class="basic-form text-center">
+                                            @if($show_buttons["edit_customer"])
                                             <div class="mb-3">
                                                 <button type="button" class="btn btn-primary" data-toggle="modal"
                                                     data-target="#editCustomerModal">Edit Customer</button>
                                             </div>
+                                            @endif
                                             @if ($user->user_client != null)
+                                            @if($show_buttons["add_trading_account"])
                                             <div class="mb-3">
                                                 <button type="button" class="btn btn-secondary" data-toggle="modal"
                                                     data-target="#addTradingAccountModal">Add Trading Account</button>
                                             </div>
+                                            @endif
                                             @else
+                                            @if($show_buttons["create_client"])
                                             <div class="mb-3">
                                                 <button type="button" class="btn btn-warning" data-toggle="modal"
                                                     data-target="#createClientModal">Create Client</button>
                                             </div>
                                             @endif
+                                            @endif
+                                            @if($show_buttons["change_verification"])
                                             <div class="mb-3">
                                                 <button type="button" class="btn btn-success" data-toggle="modal"
                                                     data-target="#changeVerificationModal">Change Verification</button>
                                             </div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
                                 <!-- ----/column---- -->
                             </div>
-                            <!-- ----/column---- -->
+                            <!-- Trading Account -->
+                            @if($show_cards['trading_account']['read'])
                             <div class="col-xl-12 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="card">
                                     <div class="card-header">
@@ -150,8 +159,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- ----/column-- -->
                             </div>
+                            @endif
+                            <!-- Withdrawal Requests -->
+                            @if($show_cards['withdrawal_requests']['read'])
                             <div class="col-xl-12 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="card">
                                     <div class="card-header">
@@ -272,8 +283,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- ----/column-- -->
                             </div>
+                            @endif
+                            <!-- Transfers -->
+                            @if($show_cards['transfers']['read'])
                             <div class="col-xl-12 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="card">
                                     <div class="card-header">
@@ -321,8 +334,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- ----/column-- -->
                             </div>
+                            @endif
+                            <!-- Referenced List -->
+                            @if($show_cards['referenced_list']['read'])
                             <div class="col-xl-12 wow fadeInUp" data-wow-delay="0.1s">
                                 <div class="card">
                                     <div class="card-header">
@@ -406,8 +421,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- ----/column-- -->
                             </div>
+                            @endif
                         </div>
                     </div>
                 </div>

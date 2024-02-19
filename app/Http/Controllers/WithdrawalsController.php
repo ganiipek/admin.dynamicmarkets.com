@@ -130,37 +130,26 @@ class WithdrawalsController extends Controller
 
     public function getWithdrawalByClientIds(int $id)
     {
-        $res = $this->ReqController->get($this->BASE_URL . "users/withdraws", ['user_id' => $id]);
-        $json = json_decode($res->getBody());
-        return response()->json($json)->getData(); 
-
-        $withdraws = [];
-        foreach ($json->withdraws as $withdraw) {
-            $new_withdraw = [
-                $withdraw->id => [
-                    'Withdrawal_ID' => $withdraw->id,
-                    'User_ID' => $withdraw->user_id,
-                    'Request_Date' => $withdraw->created_at,
-                    'Withdrawal_Status' => $withdraw->withdraw_status->name,
-                    'Requested_Amount' => $withdraw->amount,
-                    'Bank_Name' => $withdraw->bic,
-                    'IBAN' => $withdraw->iban,
-                    'Account_Holder' => $withdraw->holder,
-                    'BIC' => $withdraw->bic,
-                ],
-            ];
-            array_push($withdraws, $new_withdraw[$withdraw->id]);
+        $role_permissions = collect(session()->get('user')['role']['role_permissions']);
+        if($role_permissions->filter(function ($role_permission) {
+                if ($role_permission['permission']['slug'] == 'CUSTOMER_WITHDRAW' && $role_permission['read'] == false) {
+                    return true;
+                }
+            }
+        )){
+            return response()->json([
+                'message' => "You don't have permission to access this page",
+                'withdraws' => collect()
+            ], 403);
         }
 
-        $datas = [
-            "status" => "200",
-            "withdrawals" => [
-                "datas" => [
-                    $withdraws
-                ]
-            ]
-        ];
-        return response()->json($datas)->getData()->withdrawals->datas[0];
+        $res = $this->ReqController->get($this->BASE_URL . "users/withdraws", ['user_id' => $id]);
+        $json = json_decode($res->getBody());
+
+        return response()->json([
+            'message' => "",
+            'withdraws' => response()->json($json)->getData()->withdraws
+        ], 403);
     }
 
     public function getWithdrawalStatuses()

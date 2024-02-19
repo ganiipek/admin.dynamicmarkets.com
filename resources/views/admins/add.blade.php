@@ -41,8 +41,7 @@
                                                 <label class="form-label">Role</label>
                                                 <select id="inputState" class="default-select form-control wide">
                                                     @foreach($admin_role_types as $admin_role_type)
-                                                    <option id="{{ $admin_role_type->id }}"
-                                                        slug="{{ $admin_role_type->slug }}">
+                                                    <option id="{{ $admin_role_type->id }}">
                                                         {{ $admin_role_type->name }}</option>
                                                     @endforeach
                                                 </select>

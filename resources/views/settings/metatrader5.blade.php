@@ -26,7 +26,9 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <button id="tradingAccountDefaultGroupButton" type="button"
-                                                class="btn btn-success">Save</button>
+                                                class="btn btn-success"
+                                                {{ $show_buttons["save"] ? "":"disabled"}}
+                                                >Save</button>
                                         </div>
                                     </div>
                                     <hr>
@@ -46,7 +48,9 @@
                                         </div>
                                         <div class="col-3">
                                             <button id="mt5CustomTradingAccountIdButton" type="button"
-                                                class="btn btn-success">Save</button>
+                                                class="btn btn-success"
+                                                {{ $show_buttons["save"] ? "":"disabled"}}
+                                                >Save</button>
                                         </div>
                                     </div>
                                     <hr>
@@ -59,7 +63,9 @@
                                         </div>
                                         <div class="col-3">
                                             <button id="userTradingAccountsLimitButton" type="button"
-                                                class="btn btn-success">Save</button>
+                                                class="btn btn-success"
+                                                {{ $show_buttons["save"] ? "":"disabled"}}
+                                                >Save</button>
                                         </div>
                                     </div>
                                     <hr>

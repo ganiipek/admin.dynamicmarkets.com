@@ -29,13 +29,9 @@ class AuthController extends Controller
 
         if ($response->successful()) {
             session([
-                'user' => [
-                'email' => $request->input('email'), 
-                'id' => $responseData['admin']['id']
-                ],
+                'user' => $responseData['admin']
             ]);
 
-            
             Cookie::forget('access_token');
             Cookie::forget('refresh_token');
             Cookie::queue('access_token', $responseData['accessToken'], 5, null, null, true, true);
@@ -50,12 +46,15 @@ class AuthController extends Controller
         }
 
         if ($response->status() == 403) {
+            session([
+                'user' => $responseData['admin']
+            ]);
+            
             if (in_array('message', $responseData)) {
                 return response()->json([
                     'message' => $responseData['message'],
                 ], 403);
             }
-            session(['user' => ['email' => $request->input('email'), 'id' => $responseData['admin_id']]]);
             
             return response()->json([
                 'message' => $responseData['message']
@@ -92,7 +91,10 @@ class AuthController extends Controller
 
         $responseData = $response->json();
         if ($response->successful()) {
-            session(['fingerprint' => $responseData['fingerprint']]);
+            session([
+                'user' => $responseData['admin'],
+                'fingerprint' => $responseData['fingerprint']
+            ]);
 
             Cookie::forget('access_token');
             Cookie::forget('refresh_token');
@@ -101,10 +103,10 @@ class AuthController extends Controller
             Cookie::queue('refresh_token', $responseData['refreshToken'], 24*60, null, null, true, true);
 
             return response()
-            ->json([
-                'email' => $responseData['admin']['email'],
-                'admin_id' =>  $responseData['admin']['id'],
-            ], 200);
+                ->json([
+                    'email' => $responseData['admin']['email'],
+                    'admin_id' =>  $responseData['admin']['id'],
+                ], 200);
             // ->cookie('access_token', $responseData['accessToken'], 5, null, null, true, true)
             // ->cookie('refresh_token', $responseData['refreshToken'], 24*60, null, null, true, true);
         }
