@@ -20,11 +20,13 @@
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">Last Name</label>
-                                                <input name="input_last_name" type="text" class="form-control" placeholder="Last Name">
+                                                <input name="input_last_name" type="text" class="form-control"
+                                                    placeholder="Last Name">
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">E-Mail</label>
-                                                <input name="input_email"type="email" class="form-control" placeholder="E-Mail">
+                                                <input name="input_email" type="email" class="form-control"
+                                                    placeholder="E-Mail">
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">Role</label>
@@ -37,11 +39,13 @@
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">Password</label>
-                                                <input id="input_password" name="input_password"type="password" class="form-control" placeholder="Password">
+                                                <input id="input_password" name="input_password" type="password"
+                                                    class="form-control" placeholder="Password">
                                             </div>
                                             <div class="mb-3 col-md-6">
                                                 <label class="form-label">Password Confirmation</label>
-                                                <input name="input_password_confirmation"type="password" class="form-control" placeholder="Password">
+                                                <input name="input_password_confirmation" type="password"
+                                                    class="form-control" placeholder="Password">
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-primary">Add</button>
@@ -105,7 +109,8 @@
                     success: function(response) {
                         console.log(response)
                         alert(response.message)
-                        window.location.href = "{{ action('App\\Http\\Controllers\\AdminController@initAdminListPage') }}";
+                        window.location.href =
+                            "{{ action('App\\Http\\Controllers\\AdminController@initAdminListPage') }}";
                     },
                     error: function(error) {
                         console.log(error)
