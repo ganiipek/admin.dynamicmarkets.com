@@ -136,7 +136,7 @@ class WithdrawalsController extends Controller
                     return true;
                 }
             }
-        )){
+        )->count() > 0){
             return response()->json([
                 'message' => "You don't have permission to access this page",
                 'withdraws' => collect()

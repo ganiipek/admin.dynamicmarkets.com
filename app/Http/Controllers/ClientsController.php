@@ -32,8 +32,9 @@ class ClientsController extends Controller
     public function initCustomerDetailPage(Request $request)
     {
         $trading_accounts = $this->getTradingAccountByIds($request->get('id'));
-        // dd($this->WithdrawalsController->getWithdrawalByClientIds($request->get('id')));
         $withdraws = $this->WithdrawalsController->getWithdrawalByClientIds($request->get('id'));
+
+        // dd($trading_accounts, $withdraws);
 
         $show_cards = [
             'trading_account' => [
@@ -215,7 +216,7 @@ class ClientsController extends Controller
                         return true;
                     }
                 }
-            )){
+            )->count() > 0){
                 return response()->json([
                     'message' => "You don't have permission to access this page",
                     'accounts' => collect()
@@ -237,9 +238,9 @@ class ClientsController extends Controller
                     ]);
                 }
             }
-
+            
             return response()->json([
-                "accounts"=>$accounts->getData()->accounts
+                "accounts"=>$accounts
             ]);
 
         } catch (\GuzzleHttp\Exception\BadResponseException $exception) {
