@@ -6,15 +6,6 @@
                 <!-- Row -->
                 <div class="row">
                     <div class="col-xl-12">
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <div class="page-titles style1">
-                                    <div class="d-flex align-items-center">
-                                        <h2 class="heading">Users</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                         <div class="swiper overflow-hidden" id="card-swiper">
                             <div class="swiper-wrapper">
                                 <div class="swiper-slide">

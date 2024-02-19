@@ -4,17 +4,6 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-xl-12">
-                        <div class="row">
-                            <div class="col-xl-12">
-                                <div class="page-titles style1">
-                                    <div class="d-flex align-items-center">
-                                        <h2 class="heading">Admins</h2>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-12">
                         <div class="card">
                             <div class="card-header">
                                 <h4 class="card-title">Add New Admin</h4>
