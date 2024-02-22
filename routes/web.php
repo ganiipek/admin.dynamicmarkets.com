@@ -96,6 +96,12 @@ Route::group(['middleware' => ['accessToken']], function () {
         Route::prefix('/admins')->group(function () {
             Route::post('/add', 'App\Http\Controllers\AdminController@addAdmin');
             Route::delete('/delete', 'App\Http\Controllers\AdminController@deleteAdmin');
+
+            Route::post('/roles', 'App\Http\Controllers\AdminController@addRole');
+            Route::delete('/roles', 'App\Http\Controllers\AdminController@deleteRole');
+
+            Route::post('/role-permission/update', 'App\Http\Controllers\AdminController@updateRolePermissions');
+            
         });
 
         Route::prefix('/settings')->group(function () {
@@ -116,8 +122,11 @@ Route::group(['middleware' => ['accessToken']], function () {
         });
     });
 
+    Route::get('/', 'App\Http\Controllers\StatisticsController@initStatisticsPage')->name("index");
 
     Route::prefix('/customers')->group(function () {
+        Route::get('/', 'App\Http\Controllers\ClientsController@initCustomerPage')->name("customers");
+
         Route::get('/create', function () {
             return view('customers.create');
         })->name('customers.create');
@@ -130,6 +139,7 @@ Route::group(['middleware' => ['accessToken']], function () {
             });
         });
     });
+    Route::get('/user', 'App\Http\Controllers\ClientsController@initCustomerDetailPage')->name("user");
 
     Route::prefix('/applications')->group(function () {
         Route::get('swaps', 'App\Http\Controllers\MetatraderController@initSwapsPage')->name('customers.metatrader.swaps');
@@ -151,6 +161,8 @@ Route::group(['middleware' => ['accessToken']], function () {
 
         Route::get('/edit', 'App\Http\Controllers\AdminController@initAdminEditPage')->name("admins.edit");
 
+        Route::get('/role-permissions', 'App\Http\Controllers\AdminController@initRolePermissionPage')->name("admins.role_permissions");
+
         Route::get('/swaps', 'App\Http\Controllers\SwapsController@initSetSwapsPage')->name("admins.set_swaps");
 
         Route::get('/settings', 'App\Http\Controllers\AdminController@initSettingsPage')->name("admins.settings");
@@ -165,11 +177,4 @@ Route::group(['middleware' => ['accessToken']], function () {
         Route::get('/http', 'App\Http\Controllers\LoggerController@initLoggerHTTPPage')->name("loggers.http");
         Route::get('/service', 'App\Http\Controllers\LoggerController@initLoggerServicePage')->name("loggers.service");
     });
-    
-    Route::get('/', 'App\Http\Controllers\StatisticsController@initStatisticsPage')->name("index");
-    Route::get('/customers', 'App\Http\Controllers\ClientsController@initCustomerPage')->name("customers");
-
-    Route::get('/user', 'App\Http\Controllers\ClientsController@initCustomerDetailPage')->name("user");
-    
-
 });

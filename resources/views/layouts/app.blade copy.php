@@ -150,35 +150,81 @@
         <div class="dlabnav">
             <div class="dlabnav-scroll">
                 <ul class="metismenu" id="menu">
-                    @foreach($sidebar_items as $key => $sidebar_item)
-                    @if(array_key_exists('route', $sidebar_item))
                     <li>
-                        <a href="{{ route($sidebar_item['route']) }}" aria-expanded="false">
-                            <i class="material-icons-outlined">{{ $sidebar_item["icon"] }}</i>
-                            <span class="nav-text">{{ $sidebar_item["name"] }}</span>
+                        <a href="{{ route('index') }}" aria-expanded="false">
+                            <i class="material-icons-outlined">dashboard</i>
+                            <span class="nav-text">Dashboard</span>
                         </a>
                     </li>
-                    @elseif(array_key_exists('items', $sidebar_item))
                     <li>
                         <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
-                            <i class="material-symbols-outlined">{{ $sidebar_item["icon"] }}</i>
-                            <span class="nav-text">{{ $sidebar_item["name"] }}</span>
+                            <i class="material-symbols-outlined">person</i>
+                            <span class="nav-text">Customers</span>
                         </a>
                         <ul aria-expanded="false">
-                        @foreach($sidebar_item['items'] as $key => $sidebar_sub_item)
-                        @if(array_key_exists('route', $sidebar_sub_item))
-                            <li><a href="{{ route($sidebar_sub_item['route']) }}">{{ $sidebar_sub_item["name"] }}</a></li>
-                        @elseif(array_key_exists('items', $sidebar_sub_item))
+                            <li><a href="{{ route('customers.create') }}">Create New Customer</a></li>
+                            <li><a href="{{ route('customers') }}">Customers List</a></li>
+                            <li><a href="{{ route('withdrawal.requests') }}">Withdrawal Requests</a></li>
                             <li><a class="has-arrow" href="javascript:void(0);" aria-expanded="false">Metatrader5
                                     Clients</a>
                                 <ul aria-expanded="false">
-                                @foreach($sidebar_sub_item['items'] as $key => $sidebar_sub2_item)
-                                <li><a href="{{ route($sidebar_sub2_item['route']) }}">{{ $sidebar_sub2_item["name"] }}</a></li>
-                                @endforeach
+                                    <li><a href="{{ route('customers.metatrader.clients.list') }}">Bind/Unbind
+                                            Client</a></li>
+                                    <li><a href="{{ route('customers.metatrader.clients.add') }}">Create New Client</a>
+                                    </li>
+
                                 </ul>
                             </li>
-                        @endif
-                        @endforeach
+                        </ul>
+                    </li>
+                    <li>
+                        <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                            <i class="material-symbols-outlined">apps</i>
+                            <span class="nav-text">Application</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('customers.metatrader.swaps') }}">Set Swaps</a></li>
+                            <li><a href="{{ route('applications.crypto_transfer_check') }}">Crypto Transfer Check</a></li>
+                        </ul>
+                    </li>
+                    
+                    
+                    @foreach(Session::get('user')['role']['role_permissions'] as $role_permission)
+                    @if($role_permission['permission']['slug'] == 'ADMIN' && $role_permission['read'] == true)
+                    <li>
+                        <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                            <i class="material-symbols-outlined"> admin_panel_settings</i>
+                            <span class="nav-text">Admin</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('admins.add') }}">New Admin</a></li>
+                            <li><a href="{{ route('admins.list') }}">Admin List</a></li>
+                            <li><a href="{{ route('admins.role_permissions') }}">Role Permissions</a></li>
+                        </ul>
+                    </li>
+                    @elseif(($role_permission['permission']['slug'] == 'SETTINGS_METATRADER5' && $role_permission['read'] == true) || ($role_permission['permission']['slug'] == 'SETTINGS_SUMSUB' && $role_permission['read'] == true))
+                    <li>
+                        <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                            <i class="material-symbols-outlined">tune</i>
+                            <span class="nav-text">Settings</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            @if($role_permission['permission']['slug'] == 'SETTINGS_METATRADER5' && $role_permission['read'] == true)
+                            <li><a href="{{ route('settings.metatrader5') }}">Metatrader5 Settings</a></li>
+                            @elseif($role_permission['permission']['slug'] == 'SETTINGS_SUMSUB' && $role_permission['read'] == true)
+                            <li><a href="{{ route('settings.sumsub') }}">Sumsub Settings</a></li>
+                            @endif
+                        </ul>
+                    </li>
+                    @elseif($role_permission['permission']['slug'] == 'LOGGER' && $role_permission['read'] == true)
+                    <li>
+                        <a class="has-arrow " href="javascript:void(0);" aria-expanded="false">
+                            <i class="material-symbols-outlined">logo_dev</i>
+                            <span class="nav-text">Loggers</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="{{ route('loggers.service') }}">Service Logger</a></li>
+                            <li><a href="{{ route('loggers.http') }}">HTTP Logger</a></li>
                         </ul>
                     </li>
                     @endif

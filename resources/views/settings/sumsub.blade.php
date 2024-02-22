@@ -19,7 +19,9 @@
                                         </div>
                                         <div class="col-3">
                                             <button id="sumsubWebsiteLevelButton" type="button"
-                                                class="btn btn-success">Save</button>
+                                                class="btn btn-success"
+                                                {{ $show_buttons["save"] ? "":"disabled"}}
+                                                >Save</button>
                                         </div>
                                     </div>
                                     <hr>
@@ -32,7 +34,9 @@
                                         </div>
                                         <div class="col-3">
                                             <button id="sumsubManuelLevelButton" type="button"
-                                                class="btn btn-success">Save</button>
+                                                class="btn btn-success"
+                                                {{ $show_buttons["save"] ? "":"disabled"}}
+                                                >Save</button>
                                         </div>
                                     </div>
                                     <hr>

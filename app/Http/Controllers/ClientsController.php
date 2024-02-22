@@ -31,16 +31,74 @@ class ClientsController extends Controller
     
     public function initCustomerDetailPage(Request $request)
     {
-        $trading_accounts = $this->getTradingAccountByIds($request->get('id'));
-        $withdraws = $this->WithdrawalsController->getWithdrawalByClientIds($request->get('id'))->withdraws;
+        // $withdraws = $this->WithdrawalsController->getWithdrawalByClientIds($request->get('id'));
 
-        // dd($withdraws);
+        $show_cards = [
+            'trading_account' => [
+                "read" => false,
+                "write" => false
+            ],
+            'withdrawal_requests' => [
+                "read" => false,
+                "write" => false
+            ],
+            'transfers' => [
+                "read" => false,
+                "write" => false
+            ],
+            'referenced_list' => [
+                "read" => true,
+                "write" => true
+            ]
+        ];
 
+        $show_buttons = [
+            "edit_customer" => false,
+            "create_client" => false,
+            "add_trading_account" => false,
+            "change_verification" => false
+        ];
+
+        foreach (session()->get('user')['role']['role_permissions'] as $role_permission) {
+            if ($role_permission['permission']['slug'] == 'METATRADER5_TRADING_ACCOUNT') {
+                $show_cards['trading_account']['read'] = $role_permission['read'];
+                $show_cards['trading_account']['write'] = $role_permission['write'];
+
+                if ($role_permission['write'] == true) {
+                    $show_buttons['add_trading_account'] = true;
+                }
+            }
+
+            if ($role_permission['permission']['slug'] == 'METATRADER5_CLIENT') {
+                $show_buttons['create_client'] = $role_permission['write'];
+            }
+
+            if ($role_permission['permission']['slug'] == 'CUSTOMER_WITHDRAW') {
+                $show_cards['withdrawal_requests']['read'] = $role_permission['read'];
+                $show_cards['withdrawal_requests']['write'] = $role_permission['write'];
+            }
+
+            if ($role_permission['permission']['slug'] == 'CUSTOMER_TRANSFER') {
+                $show_cards['transfers']['read'] = $role_permission['read'];
+                $show_cards['transfers']['write'] = $role_permission['write'];
+            }
+
+            if ($role_permission['permission']['slug'] == 'CUSTOMER_VERIFICATION') {
+                $show_buttons['change_verification'] = $role_permission['write'];
+            }
+
+            if ($role_permission['permission']['slug'] == 'CUSTOMER') {
+                $show_buttons['edit_customer'] = $role_permission['write'];
+            }
+        }
+        
         return view('user', [
+            'user_id' => $request->get('id'),
             'user' => $this->getUserById($request->get('id')),
-            'trading_accounts' => $this->getTradingAccountByIds($request->get('id'))->getData()->accounts,
-            'withdrawals' => $withdraws,
+            // 'withdrawals' => $withdraws->getData()->withdraws,
             'referenced_users' => $this->getReferencedByIds($request->get('id')),
+            'show_cards' => $show_cards,
+            'show_buttons' => $show_buttons
         ]);
     }
 
@@ -149,6 +207,19 @@ class ClientsController extends Controller
     public function getTradingAccountByIds(int $id)
     {
         try {
+            $role_permissions = collect(session()->get('user')['role']['role_permissions']);
+            if($role_permissions->filter(function ($role_permission) {
+                    if ($role_permission['permission']['slug'] == 'METATRADER5_TRADING_ACCOUNT' && $role_permission['read'] == false) {
+                        return true;
+                    }
+                }
+            )->count() > 0){
+                return response()->json([
+                    'message' => "You don't have permission to access this page",
+                    'accounts' => collect()
+                ], 403);
+            }
+
             $res = $this->ReqController->get($this->BASE_URL . "metatraders/user_trading_accounts", ['user_id' => $id]);
             $json = json_decode($res->getBody());
             $accounts = collect();
@@ -164,7 +235,7 @@ class ClientsController extends Controller
                     ]);
                 }
             }
-
+            
             return response()->json([
                 "accounts"=>$accounts
             ]);
