@@ -31,10 +31,7 @@ class ClientsController extends Controller
     
     public function initCustomerDetailPage(Request $request)
     {
-        $trading_accounts = $this->getTradingAccountByIds($request->get('id'));
-        $withdraws = $this->WithdrawalsController->getWithdrawalByClientIds($request->get('id'));
-
-        // dd($trading_accounts, $withdraws);
+        // $withdraws = $this->WithdrawalsController->getWithdrawalByClientIds($request->get('id'));
 
         $show_cards = [
             'trading_account' => [
@@ -96,9 +93,9 @@ class ClientsController extends Controller
         }
         
         return view('user', [
+            'user_id' => $request->get('id'),
             'user' => $this->getUserById($request->get('id')),
-            'trading_accounts' => $trading_accounts->getData()->accounts,
-            'withdrawals' => $withdraws->getData()->withdraws,
+            // 'withdrawals' => $withdraws->getData()->withdraws,
             'referenced_users' => $this->getReferencedByIds($request->get('id')),
             'show_cards' => $show_cards,
             'show_buttons' => $show_buttons
